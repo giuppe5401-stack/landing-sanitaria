@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assistenza Sanitaria</title>
-    <meta http-equiv="refresh" content="0; url=/" />
+    <title>Reindirizzamento…</title>
+    <meta http-equiv="refresh" content="0; url=/landing-sanitaria/" />
   </head>
   <body>
+    <script>
+      // Redirect verso la home considerando eventuali path aggiuntivi
+      const base = '/landing-sanitaria/';
+      const redirectUrl = base;
+      location.replace(redirectUrl);
+    </script>
     <noscript>
-      <p>Sei stato reindirizzato alla home. Abilita JavaScript per usare l'app.</p>
+      <a href="/landing-sanitaria/">Vai alla home</a>
     </noscript>
   </body>
 </html>
