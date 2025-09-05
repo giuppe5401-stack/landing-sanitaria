@@ -1,16 +1,9 @@
 # Landing Sanitaria - Deploy GitHub Pages
 
-Questo progetto viene pubblicato automaticamente su **GitHub Pages** tramite GitHub Actions.
-
-## URL pubblico
+URL pubblico previsto:
 https://giuppe5401-stack.github.io/landing-sanitaria/
 
-## Deploy workflow
-Ogni push sul branch `main` avvia la build e il deploy su Pages.
-
----
-
-### Setup necessario
-- `vite.config.ts` deve avere `base: '/landing-sanitaria/'`
-- Presente workflow `.github/workflows/deploy.yml`
-- Abilitare **Settings → Pages → Source: GitHub Actions**
+## Setup
+- vite.config.ts con base: '/landing-sanitaria/'
+- aggiunto fallback 404.html
+- workflow deploy.yml in .github/workflows
