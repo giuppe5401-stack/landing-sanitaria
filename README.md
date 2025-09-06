@@ -1,23 +1,15 @@
-# Pubblica Assistenza – Parte Pubblica (Genova)
+# Pulsante "Pubblica Assistenza" — Variante 3 (Croce bianca su cerchio rosso)
 
-Questa cartella contiene **solo la parte pubblica** per GitHub Pages.
+Questo pacchetto contiene un esempio pronto all'uso del pulsante.
+## Come usare
+1. Carica la cartella sul tuo sito (o scompatta lo ZIP e copia i file nel progetto).
+2. Inserisci il markup del pulsante dove ti serve:
+```html
+<button class="btn-assistenza">
+  <img class="icon" src="assets/cross-red.svg" alt="" aria-hidden="true"/>
+  <span class="label">PUBBLICA ASSISTENZA</span>
+</button>
+```
+3. Assicurati di includere `styles.css` nella tua pagina.
 
-## Contenuto
-- `index.html` – landing con hero (logo centrato), sezione Servizi e modulo contatto
-- `style.css` – stili con **header bilanciato** (menu centrato)
-- `script.js` – gestione modulo contatto (salva su localStorage per la demo)
-- `img/` – logo SVG
-- `.nojekyll` – richiesto da GitHub Pages
-- `README.md` – questo file
-
-## Deploy
-1. Carica tutti i file **nella root** del repository.
-2. Imposta `Settings → Pages → Branch: main → Folder: /(root)`.
-3. Attendi la pubblicazione e ricarica la pagina.
-
-
-## 🔧 Extra inclusi
-- **Open Graph / Twitter meta** per anteprime social.
-- **Favicon SVG + PNG**.
-- **Cookie banner** con consenso salvato in locale.
-- **Analytics leggero**: pageview + click su CTA (salvati in `localStorage`).
+Puoi cambiare il testo, linkare il bottone con un `<a>` (aggiungi `href`), o modificare i colori nelle variabili `:root` in `styles.css`.

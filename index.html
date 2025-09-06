@@ -1,127 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pubblica Assistenza Genova – Trasporti sanitari e supporto pazienti</title>
-  <meta name="description" content="Servizi di pubblica assistenza a Genova: trasporti sanitari programmati, trasferimenti interstrutturali, supporto a pazienti fragili e coordinamento mezzi. Prenota un trasporto o chiedi informazioni.">
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Pubblica Assistenza Genova – Trasporti sanitari e supporto pazienti">
-  <meta property="og:description" content="Trasporti sanitari programmati, supporto a pazienti fragili e trasferimenti interstrutturali a Genova.">
-  <meta property="og:image" content="img/og-image.png">
-  <meta property="og:locale" content="it_IT">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Pubblica Assistenza Genova – Trasporti sanitari">
-  <meta name="twitter:description" content="Prenota un trasporto o richiedi informazioni.">
-  <meta name="twitter:image" content="img/og-image.png">
-
-  <!-- Favicons -->
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pulsante - Pubblica Assistenza</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="bg">
-  <header class="header" role="banner">
-    <div class="logo-wrap"></div>
-    <nav aria-label="Navigazione principale">
-      <a class="nav-link" href="#servizi">Servizi</a>
-      <a class="nav-link" href="#contatto">Contatti</a>
-    </nav>
-  </header>
-
-  <main class="container">
-    <section class="hero hero-center card" aria-labelledby="hero-title">
-      <img src="img/logo.svg" alt="Logo Pubblica Assistenza" class="logo hero-logo" />
-      <h1 id="hero-title" class="title">Assistenza rapida e organizzata a Genova</h1>
-      <p class="subtitle">Trasporti sanitari, supporto-tutto in un unica soluzione</p>
-    </section>
-
-    <section id="servizi" class="services-section" aria-labelledby="servizi-title">
-      <h2 id="servizi-title">Servizi</h2>
-      <div class="services-grid">
-        <article class="card service-card">
-          <h3>Trasporti sanitari programmati</h3>
-          <p>Accompagnamento per visite, terapie e dimissioni in tutta <strong>Genova e provincia</strong>.</p>
-          <ul class="list">
-            <li>Ritiro a domicilio e assistenza alla mobilità</li>
-            <li>Gestione <strong>piano</strong>, <strong>ascensore</strong>, <strong>ossigeno</strong></li>
-            <li>Collegamento con ospedali e cliniche</li>
-          </ul>
-          <div class="card-actions"><a class="btn" href="#contatto" data-track="cta_prenota">Prenota</a></div>
-        </article>
-        <article class="card service-card">
-          <h3>Supporto a pazienti fragili</h3>
-          <p>Per persone con <strong>mobilità ridotta</strong> o necessità particolari, in sicurezza.</p>
-          <ul class="list">
-            <li>Valutazione deambulazione</li>
-            <li>Gestione abitazioni senza ascensore</li>
-            <li>Presidi e ausili su richiesta</li>
-          </ul>
-          <div class="card-actions"><a class="btn" href="#contatto" data-track="cta_richiedi">Richiedi assistenza</a></div>
-        </article>
-        <article class="card service-card">
-          <h3>Trasferimenti interstrutturali</h3>
-          <p>Trasporto tra <strong>ospedali, cliniche e RSA</strong> con personale qualificato.</p>
-          <ul class="list">
-            <li>Ambulanze per non autosufficienti</li>
-<li>Assistenza durante il percorso</li>
-          </ul>
-          <div class="card-actions"><a class="btn" href="#contatto" data-track="cta_organizza">Organizza</a></div>
-        </article>
-        <article class="card service-card">
-          <h3>Coordinamento mezzi e volontari</h3>
-          <p>Gestione operativa e turni, per risposte rapide sul territorio.</p>
-          
-          <div class="card-actions"><a class="btn" href="#contatto" data-track="cta_contattaci">Contattaci</a></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="contatto" class="contact card" aria-labelledby="contatto-title">
-      <h2 id="contatto-title">Richiedi informazioni o un trasporto</h2>
-      <form id="contactForm" class="form">
-        <div class="inline-form">
-          <input type="text" id="cNome" placeholder="Nome e cognome" aria-label="Nome e cognome" required />
-          <input type="tel" id="cTelefono" placeholder="Telefono" aria-label="Telefono" required />
-        </div>
-        <textarea id="cMessaggio" rows="4" placeholder="Messaggio (es. richiesta trasporto, data/ora)" aria-label="Messaggio" required></textarea>
-        <label class="consent"><input type="checkbox" id="cConsenso" required /> Autorizzo il trattamento dei dati.</label>
-        <button class="btn" type="submit" data-track="form_invia">Invia richiesta</button>
-        <p id="contactResult" class="muted small" aria-live="polite"></p>
-      </form>
-    </section>
+<body>
+  <main class="demo">
+    <button class="btn-assistenza" aria-label="Pubblica Assistenza">
+      <img class="icon" src="assets/cross-red.svg" alt="" aria-hidden="true"/>
+      <span class="label">PUBBLICA ASSISTENZA</span>
+    </button>
   </main>
-
-  <footer class="footer" role="contentinfo">
-    <div>
-      <strong>Contatti</strong><br/>
-      Tel: <a href="tel:+390000000000">+39 000 000 000</a><br/>
-      Email: <a href="mailto:info@pubblica-assistenza.example">info@pubblica-assistenza.example</a>
-    </div>
-    <div>
-      <strong>Indirizzo</strong><br/>
-      Via Esempio 1, 16100 Genova (IT)
-    </div>
-    <div>
-      <a class="btn" href="#contatto">Richiedi informazioni</a>
-    </div>
-  </footer>
-
-  <script src="script.js" defer></script>
-
-  <!-- Cookie Banner -->
-  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Consenso cookie" hidden>
-    <div class="cookie-inner">
-      <p class="cookie-text"><strong>Usiamo cookie tecnici</strong> e raccolta anonima per statistiche essenziali. Proseguendo accetti l'uso.</p>
-      <div class="cookie-actions">
-        <button class="btn" id="cookieAccept" data-track="cookie_accept">Accetta</button>
-        <button class="btn ghost" id="cookieDecline" data-track="cookie_decline">Rifiuta</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
