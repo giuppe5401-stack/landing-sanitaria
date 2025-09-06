@@ -1,0 +1,52 @@
+// Storage layer with namespaced keys
+const NS = 'ga_';
+const KEYS = {
+  mezzi: NS + 'mezzi',
+  pren:  NS + 'prenotazioni',
+  paz:   NS + 'pazienti',
+  turni: NS + 'turni',
+};
+
+function load(key){
+  try{ return JSON.parse(localStorage.getItem(key) || '[]'); }catch(e){ return []; }
+}
+function save(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function uid(prefix='id'){
+  return prefix + '_' + Math.random().toString(36).slice(2,9);
+}
+
+// CSV helper
+function exportCSV(filename, rows){
+  const csv = rows.map(r => r.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ICS helper (single event)
+function downloadICS(filename, {title, start, end, description, location}){
+  function fmt(d){
+    const pad=n=>String(n).padStart(2,'0');
+    return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z';
+  }
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//GA//Assist//IT',
+    'BEGIN:VEVENT',
+    'UID:'+uid('evt')+'@assist',
+    'DTSTAMP:'+fmt(new Date()),
+    'DTSTART:'+fmt(start),
+    'DTEND:'+fmt(end),
+    'SUMMARY:'+title,
+    description ? 'DESCRIPTION:'+description.replace(/\n/g,'\\n') : '',
+    location ? 'LOCATION:'+location : '',
+    'END:VEVENT','END:VCALENDAR'
+  ].filter(Boolean).join('\r\n');
+  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+  URL.revokeObjectURL(url);
+}

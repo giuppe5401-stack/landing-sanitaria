@@ -3,126 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Area riservata — Gestione</title>
+  <title>Gestionale — Assistenza</title>
   <link rel="stylesheet" href="styles.css">
-  <script>
-  // Gate di accesso lato client
-  if(localStorage.getItem('staff_authed') !== '1'){
-    const next = encodeURIComponent(location.pathname.replace(/^\//,''));
-    location.replace('login.html?next=' + next);
-  }
-
-  // --- Dati demo ---
-  const mezzi = [
-    { id:'AMB-1', tipo:'Ambulanza BLS', stato:'Disponibile' },
-    { id:'AMB-2', tipo:'Ambulanza ALS', stato:'In missione' },
-    { id:'AMB-3', tipo:'Auto sanitaria', stato:'Manutenzione' }
-  ];
-
-  function loadPrenotazioni(){
-    try{ return JSON.parse(localStorage.getItem('prenotazioni')||'[]'); }catch(e){ return []; }
-  }
-  function savePrenotazioni(list){ localStorage.setItem('prenotazioni', JSON.stringify(list)); }
-
-  function renderMezzi(){
-    const tbody = document.querySelector('#tbl-mezzi tbody'); tbody.innerHTML='';
-    mezzi.forEach(m => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = \`
-        <td><strong>\${m.id}</strong><div class="note">\${m.tipo}</div></td>
-        <td>\${badgeStato(m.stato)}</td>
-      \`;
-      tbody.appendChild(tr);
-    });
-    // popola select mezzo
-    const sel = document.getElementById('mezzo');
-    sel.innerHTML = mezzi.map(m=>\`<option value="\${m.id}">\${m.id} — \${m.tipo}</option>\`).join('');
-  }
-
-  function badgeStato(s){
-    let cls='muted'; if(s==='Disponibile') cls='ok'; else if(s==='In missione') cls='warn'; else if(s==='Manutenzione') cls='danger';
-    return '<span class="badge '+cls+'">'+s+'</span>';
-  }
-
-  // --- Prenotazioni ---
-  function renderPrenotazioni(){
-    const list = loadPrenotazioni();
-    const tbody = document.querySelector('#tbl-prenotazioni tbody'); tbody.innerHTML='';
-    list.sort((a,b)=> new Date(a.start) - new Date(b.start));
-    list.forEach(p => {
-      const tr = document.createElement('tr');
-      const start = new Date(p.start); const end = new Date(p.end);
-      tr.innerHTML = \`
-        <td><strong>\${p.mezzo}</strong><div class="note">\${p.paziente||''}</div></td>
-        <td>\${start.toLocaleDateString()}<div class="note">\${start.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} - \${end.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div></td>
-        <td>\${p.da}</td>
-        <td>\${p.a}</td>
-        <td>\${p.ausili||''}</td>
-      \`;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('countPren').textContent = list.length;
-  }
-
-  function addPrenotazione(e){
-    e.preventDefault();
-    const mezzo = document.getElementById('mezzo').value;
-    const data = document.getElementById('data').value;
-    const ora = document.getElementById('ora').value;
-    const durata = parseFloat(document.getElementById('durata').value || '1');
-    const da = document.getElementById('da').value.trim();
-    const a = document.getElementById('a').value.trim();
-    const paziente = document.getElementById('paziente').value.trim();
-    const ausili = document.getElementById('ausili').value.trim();
-
-    if(!data || !ora || !mezzo || !da || !a){
-      alert('Compila mezzo, data, ora, da, a.'); return;
-    }
-    const start = new Date(\`\${data}T\${ora}:00\`);
-    const end = new Date(start.getTime() + durata*60*60*1000);
-
-    const list = loadPrenotazioni();
-    const conflict = list.some(p => p.mezzo===mezzo && overlaps(start,end, new Date(p.start), new Date(p.end)));
-    if(conflict){
-      if(!confirm('⚠️ Il mezzo ha già una prenotazione in quell'orario. Vuoi aggiungere comunque?')) return;
-    }
-    list.push({mezzo, start, end, da, a, paziente, ausili});
-    savePrenotazioni(list);
-    (e.target).reset();
-    renderPrenotazioni();
-  }
-
-  function overlaps(s1,e1,s2,e2){ return s1 < e2 && e1 > s2; }
-
-  function exportCSV(){
-    const list = loadPrenotazioni();
-    const rows = [['Mezzo','Data','Ora inizio','Ora fine','Da','A','Paziente','Ausili']];
-    list.forEach(p=>{
-      const s=new Date(p.start), e=new Date(p.end);
-      rows.push([p.mezzo, s.toLocaleDateString(), s.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), e.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), p.da, p.a, p.paziente||'', p.ausili||'']);
-    });
-    const csv = rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
-    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='prenotazioni.csv'; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  document.addEventListener('DOMContentLoaded', ()=>{
-    renderMezzi();
-    renderPrenotazioni();
-    document.getElementById('formPren').addEventListener('submit', addPrenotazione);
-    document.getElementById('btnExport').addEventListener('click', exportCSV);
-  });
-
-  function logout(){ localStorage.removeItem('staff_authed'); location.href='login.html'; }
-  </script>
+  <script defer src="js/store.js"></script>
+  <script defer src="js/app.js"></script>
 </head>
 <body>
   <header class="header">
     <div class="container nav">
       <a class="brand" href="./"><img src="assets/logo-cross.svg" alt=""><span>Assistenza Genova</span></a>
-      <div class="nav-right"><button class="btn" onclick="logout()">Esci</button></div>
+      <div class="nav-right">
+        <button class="btn-outline btn" id="btnBackup">Backup JSON</button>
+        <label class="btn" style="cursor:pointer">
+          Ripristina JSON
+          <input id="restoreFile" type="file" accept="application/json" style="display:none">
+        </label>
+        <button class="btn" id="btnLogout">Esci</button>
+      </div>
     </div>
   </header>
 
@@ -130,79 +27,192 @@
     <div class="container">
       <h2>Dashboard operativa</h2>
 
-      <!-- Sezione Mezzi -->
-      <div class="card" style="margin:10px 0 20px;">
-        <h3>Gestione mezzi</h3>
-        <table id="tbl-mezzi" class="table">
-          <thead><tr><th>Mezzo</th><th>Stato</th></tr></thead>
-          <tbody></tbody>
-        </table>
-        <p class="note">Stati: <span class="badge ok">Disponibile</span> <span class="badge warn">In missione</span> <span class="badge danger">Manutenzione</span></p>
+      <div class="tabs">
+        <button class="tab active" data-tab="mezzi">Mezzi</button>
+        <button class="tab" data-tab="prenotazioni">Prenotazioni</button>
+        <button class="tab" data-tab="pazienti">Pazienti</button>
+        <button class="tab" data-tab="turni">Turni</button>
+        <button class="tab" data-tab="impostazioni">Impostazioni</button>
       </div>
 
-      <!-- Sezione Prenotazioni -->
-      <div class="card" style="margin:10px 0 20px;">
-        <h3>Prenotazioni <span class="tag" id="countPren">0</span></h3>
-
-        <form id="formPren">
-          <div class="form-row">
-            <div class="field">
-              <label for="mezzo">Mezzo</label>
-              <select id="mezzo" class="input"></select>
+      <!-- --- MEZZI --- -->
+      <section id="tab-mezzi" class="tabpage">
+        <div class="card">
+          <h3>Nuovo mezzo / Modifica</h3>
+          <form id="formMezzo">
+            <input type="hidden" id="mezzo_id">
+            <div class="form-row">
+              <div class="field"><label>ID</label><input id="mezzo_codice" class="input" placeholder="AMB-1" required></div>
+              <div class="field"><label>Tipo</label><input id="mezzo_tipo" class="input" placeholder="Ambulanza BLS" required></div>
+              <div class="field">
+                <label>Stato</label>
+                <select id="mezzo_stato" class="input">
+                  <option>Disponibile</option><option>In missione</option><option>Manutenzione</option>
+                </select>
+              </div>
             </div>
-            <div class="field">
-              <label for="data">Data</label>
-              <input id="data" type="date" class="input" required>
+            <div class="form-actions">
+              <button class="btn-outline btn" type="reset" id="mezzoAnnulla">Annulla</button>
+              <button class="btn" type="submit">Salva</button>
             </div>
-            <div class="field">
-              <label for="ora">Ora inizio</label>
-              <input id="ora" type="time" class="input" required>
-            </div>
-            <div class="field">
-              <label for="durata">Durata (ore)</label>
-              <input id="durata" type="number" min="0.5" step="0.5" value="2" class="input">
-            </div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="tools">
+            <input id="filtroMezzo" class="input" placeholder="Cerca mezzo...">
           </div>
+          <table class="table" id="tblMezzi">
+            <thead><tr><th>ID</th><th>Tipo</th><th>Stato</th><th>Azioni</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-          <div class="form-row">
-            <div class="field">
-              <label for="da">Da</label>
-              <input id="da" class="input" placeholder="Indirizzo di partenza" required>
+      <!-- --- PRENOTAZIONI --- -->
+      <section id="tab-prenotazioni" class="tabpage" hidden>
+        <div class="card">
+          <h3>Nuova prenotazione</h3>
+          <form id="formPren">
+            <input type="hidden" id="pren_id">
+            <div class="form-row">
+              <div class="field">
+                <label>Mezzo</label>
+                <select id="pren_mezzo" class="input" required></select>
+              </div>
+              <div class="field">
+                <label>Paziente</label>
+                <select id="pren_paziente" class="input"></select>
+              </div>
+              <div class="field">
+                <label>Data</label>
+                <input id="pren_data" type="date" class="input" required>
+              </div>
+              <div class="field">
+                <label>Ora inizio</label>
+                <input id="pren_ora" type="time" class="input" required>
+              </div>
+              <div class="field">
+                <label>Durata (ore)</label>
+                <input id="pren_durata" type="number" min="0.5" step="0.5" value="2" class="input">
+              </div>
             </div>
-            <div class="field">
-              <label for="a">A</label>
-              <input id="a" class="input" placeholder="Destinazione" required>
+            <div class="form-row">
+              <div class="field"><label>Da</label><input id="pren_da" class="input" placeholder="Indirizzo di partenza" required></div>
+              <div class="field"><label>A</label><input id="pren_a" class="input" placeholder="Destinazione" required></div>
             </div>
+            <div class="form-row">
+              <div class="field"><label>Ausili</label><input id="pren_ausili" class="input" placeholder="Sedia, ossigeno, barella..."></div>
+              <div class="field"><label>Note</label><input id="pren_note" class="input" placeholder="Indicazioni aggiuntive"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-outline btn" type="reset" id="prenAnnulla">Annulla</button>
+              <button class="btn" type="submit">Salva prenotazione</button>
+            </div>
+          </form>
+          <p class="note">Conflitti sullo stesso mezzo vengono segnalati automaticamente.</p>
+        </div>
+        <div class="card">
+          <div class="tools">
+            <input id="filtroPren" class="input" placeholder="Cerca paziente/indirizzi...">
+            <input id="filtroPrenDal" type="date" class="input">
+            <input id="filtroPrenAl" type="date" class="input">
+            <select id="filtroPrenMezzo" class="input"></select>
+            <button id="btnCsvPren" class="btn-outline btn">Export CSV</button>
           </div>
+          <table class="table" id="tblPren">
+            <thead><tr><th>Mezzo</th><th>Data / Orari</th><th>Paziente</th><th>Da</th><th>A</th><th>Ausili</th><th>Azioni</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-          <div class="form-row">
-            <div class="field">
-              <label for="paziente">Paziente</label>
-              <input id="paziente" class="input" placeholder="Nome e Cognome">
+      <!-- --- PAZIENTI --- -->
+      <section id="tab-pazienti" class="tabpage" hidden>
+        <div class="card">
+          <h3>Nuovo paziente</h3>
+          <form id="formPaz">
+            <input type="hidden" id="paz_id">
+            <div class="form-row">
+              <div class="field"><label>Nome e Cognome</label><input id="paz_nome" class="input" required></div>
+              <div class="field"><label>Telefono</label><input id="paz_tel" class="input"></div>
+              <div class="field"><label>Comune</label><input id="paz_comune" class="input"></div>
             </div>
-            <div class="field">
-              <label for="ausili">Ausili</label>
-              <input id="ausili" class="input" placeholder="Sedia, ossigeno, barella...">
+            <div class="form-row">
+              <div class="field"><label>Piano</label><input id="paz_piano" class="input"></div>
+              <div class="field"><label>Ascensore</label>
+                <select id="paz_asc" class="input"><option value="">-</option><option>Sì</option><option>No</option></select>
+              </div>
+              <div class="field"><label>Ossigeno</label>
+                <select id="paz_o2" class="input"><option value="">-</option><option>Sì</option><option>No</option></select>
+              </div>
             </div>
+            <div class="form-actions">
+              <button class="btn-outline btn" type="reset" id="pazAnnulla">Annulla</button>
+              <button class="btn" type="submit">Salva paziente</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="tools">
+            <input id="filtroPaz" class="input" placeholder="Cerca paziente...">
           </div>
+          <table class="table" id="tblPaz">
+            <thead><tr><th>Nome</th><th>Contatti</th><th>Dettagli</th><th>Azioni</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-          <div class="form-actions">
-            <button type="button" class="btn-outline btn" id="btnExport">Esporta CSV</button>
-            <button class="btn" type="submit">Aggiungi prenotazione</button>
+      <!-- --- TURNI --- -->
+      <section id="tab-turni" class="tabpage" hidden>
+        <div class="card">
+          <h3>Nuovo turno</h3>
+          <form id="formTurno">
+            <input type="hidden" id="turno_id">
+            <div class="form-row">
+              <div class="field"><label>Operatore</label><input id="turno_operatore" class="input" placeholder="Nome operatore" required></div>
+              <div class="field"><label>Mezzo (opz.)</label><select id="turno_mezzo" class="input"></select></div>
+              <div class="field"><label>Data</label><input id="turno_data" type="date" class="input" required></div>
+              <div class="field"><label>Ora inizio</label><input id="turno_ora_i" type="time" class="input" required></div>
+              <div class="field"><label>Ora fine</label><input id="turno_ora_f" type="time" class="input" required></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-outline btn" type="reset" id="turnoAnnulla">Annulla</button>
+              <button class="btn" type="submit">Salva turno</button>
+            </div>
+          </form>
+          <p class="note">Conflitti: stesso operatore nello stesso orario viene segnalato.</p>
+        </div>
+        <div class="card">
+          <div class="tools">
+            <input id="filtroTurno" class="input" placeholder="Cerca operatore...">
+            <input id="filtroTurnoDal" type="date" class="input">
+            <input id="filtroTurnoAl" type="date" class="input">
+            <button id="btnCsvTurni" class="btn-outline btn">Export CSV</button>
           </div>
-        </form>
+          <table class="table" id="tblTurni">
+            <thead><tr><th>Operatore</th><th>Data</th><th>Orari</th><th>Mezzo</th><th>Azioni</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-        <table id="tbl-prenotazioni" class="table" style="margin-top:16px;">
-          <thead><tr><th>Mezzo / Paziente</th><th>Data / Orari</th><th>Da</th><th>A</th><th>Ausili</th></tr></thead>
-          <tbody></tbody>
-        </table>
-        <p class="note">Le prenotazioni sono salvate nel browser (localStorage) a scopo demo.</p>
-      </div>
+      <!-- --- IMPOSTAZIONI --- -->
+      <section id="tab-impostazioni" class="tabpage" hidden>
+        <div class="card">
+          <h3>Impostazioni</h3>
+          <div class="form-actions" style="justify-content:flex-start">
+            <button class="btn-outline btn" id="btnClear">Svuota dati (localStorage)</button>
+          </div>
+          <p class="note">Suggerimento: <span class="kbd">Ctrl</span>+<span class="kbd">F</span> per cercare nella tabella, oppure usa i filtri dedicati sopra le tabelle.</p>
+        </div>
+      </section>
+
     </div>
   </main>
 
   <footer class="footer">
-    <div class="container">© 2025 Assistenza Genova — Area riservata</div>
+    <div class="container">© 2025 Assistenza Genova — Gestionale</div>
   </footer>
 </body>
 </html>

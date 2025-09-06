@@ -1,12 +1,15 @@
-# Assistenza — Mezzi & Prenotazioni (Demo statica)
+# Gestionale Assistenza — V1 (statico, GitHub Pages ready)
 
-Aggiunte principali nell'area riservata:
-- **Gestione mezzi** con stato (Disponibile / In missione / Manutenzione).
-- **Prenotazioni** con form (mezzo, data/ora, durata, da/a, paziente, ausili).
-- **Controllo conflitti** orari sullo stesso mezzo (avviso se sovrapposti).
-- **Salvataggio locale** (localStorage) e **Export CSV**.
+Funzionalità:
+- **Mezzi**: CRUD + stato (Disponibile, In missione, Manutenzione), ricerca.
+- **Pazienti**: CRUD (nome, contatti, dettagli mobilità), ricerca.
+- **Prenotazioni**: CRUD, filtri per data/mezzo, conflitti orari sullo stesso mezzo, export CSV, export ICS per singola prenotazione.
+- **Turni**: CRUD, conflitti per operatore, filtri data, export CSV.
+- **Backup/Ripristino JSON** e **Svuota dati** (localStorage).
+- **Login demo** (client-side) in `login.html` (password: `assistenza2025`).
 
-## Deploy
-Copia i file nel repo GitHub Pages. Password demo (login): `assistenza2025`.
+Deploy:
+1. Copia i file nella branch GitHub Pages.
+2. Home: `index.html`. Gestionale: `staff.html` (dopo login).
 
-⚠️ Nota: tutto è client-side per la demo. Per produzione serve backend o provider auth + database.
+Nota: tutto lato client. Per produzione reale -> backend/auth/db.
