@@ -20,7 +20,7 @@
 
   <main class="container">
     <!-- KPI -->
-    <section class="kpi-grid">
+    <section class="kpi-grid" aria-label="Indicatori principali">
       <div class="kpi-card"><div class="kpi-label">Trasporti oggi</div><div class="kpi-value" id="kpiTrasporti">0</div></div>
       <div class="kpi-card"><div class="kpi-label">Turni attivi</div><div class="kpi-value" id="kpiTurni">0</div></div>
       <div class="kpi-card"><div class="kpi-label">Mezzi disponibili</div><div class="kpi-value" id="kpiMezzi">0</div></div>
@@ -31,29 +31,29 @@
     <section class="grid-3">
       <article class="card">
         <h2>Turni di oggi</h2>
-        <ul id="turniOggi" class="list"></ul>
+        <ul id="turniOggi" class="list interactive" aria-live="polite"></ul>
         <div class="inline-form">
-          <input id="turnoNomeQuick" type="text" placeholder="Operatore" />
-          <input id="turnoOrarioQuick" type="text" placeholder="08:00–14:00" />
+          <input id="turnoNomeQuick" type="text" placeholder="Operatore" aria-label="Nome operatore" />
+          <input id="turnoOrarioQuick" type="text" placeholder="08:00–14:00" aria-label="Orario" />
           <button id="addTurnoQuick" class="btn" type="button">Aggiungi</button>
         </div>
       </article>
 
       <article class="card">
         <h2>Prossimi trasporti</h2>
-        <ul id="trasportiList" class="list"></ul>
+        <ul id="trasportiList" class="list interactive" aria-live="polite"></ul>
         <div class="inline-form">
-          <input id="traspPaziente" type="text" placeholder="Paziente (es. Rossi M.)" />
-          <input id="traspOra" type="time" />
+          <input id="traspPaziente" type="text" placeholder="Paziente (es. Rossi M.)" aria-label="Paziente" />
+          <input id="traspOra" type="time" aria-label="Ora" />
           <button id="addTrasporto" class="btn" type="button">Aggiungi</button>
         </div>
       </article>
 
       <article class="card">
         <h2>Mezzi</h2>
-        <ul id="mezziDash" class="list"></ul>
+        <ul id="mezziDash" class="list interactive"></ul>
         <div class="inline-form">
-          <input id="mezzoDash" type="text" placeholder="Ambulanza 3" />
+          <input id="mezzoDash" type="text" placeholder="Ambulanza 3" aria-label="Nome mezzo" />
           <button id="addMezzoDash" class="btn" type="button">Aggiungi</button>
         </div>
       </article>
@@ -62,9 +62,9 @@
     <section class="grid-2">
       <article class="card">
         <h2>Avvisi</h2>
-        <ul id="avvisiList" class="list"></ul>
+        <ul id="avvisiList" class="list interactive"></ul>
         <div class="inline-form">
-          <input id="avvisoInput" type="text" placeholder="Nuovo avviso (es. guanti scarsi)" />
+          <input id="avvisoInput" type="text" placeholder="Nuovo avviso (es. guanti scarsi)" aria-label="Testo avviso" />
           <button id="addAvviso" class="btn" type="button">Aggiungi</button>
         </div>
       </article>
@@ -72,8 +72,8 @@
       <article class="card">
         <h2>Azioni rapide</h2>
         <div class="quick-actions">
-          <button class="btn" id="seedDemo">Carica dati demo</button>
-          <button class="btn ghost" id="clearAll">Svuota dati</button>
+          <button class="btn" id="seedDemo" type="button">Carica dati demo</button>
+          <button class="btn ghost" id="clearAll" type="button">Svuota dati</button>
           <a class="btn" href="personale.html">Gestione completa →</a>
         </div>
         <p class="muted small">I dati sono salvati nel browser (localStorage) solo per la demo.</p>
