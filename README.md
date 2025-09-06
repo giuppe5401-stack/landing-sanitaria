@@ -1,22 +1,12 @@
-# Progetto: Landing Assistenza + Login (GitHub Pages)
+# Assistenza — Mezzi & Prenotazioni (Demo statica)
 
-Questo progetto include:
-- `index.html` — landing pubblica con hero, servizi e contatti
-- `login.html` — pagina di accesso all'area riservata (gate client-side)
-- `staff.html` — area riservata di esempio (protetta via localStorage)
-- `styles.css` — stile condiviso
-- `assets/logo-cross.svg` — icona/croce
+Aggiunte principali nell'area riservata:
+- **Gestione mezzi** con stato (Disponibile / In missione / Manutenzione).
+- **Prenotazioni** con form (mezzo, data/ora, durata, da/a, paziente, ausili).
+- **Controllo conflitti** orari sullo stesso mezzo (avviso se sovrapposti).
+- **Salvataggio locale** (localStorage) e **Export CSV**.
 
-## ⚠️ Sicurezza
-Il login è **solo dimostrativo** (controllo lato client). Non usare per dati sensibili.
-Per un'area protetta reale serve un backend o un provider di auth (es. Netlify Identity, Firebase Auth).
+## Deploy
+Copia i file nel repo GitHub Pages. Password demo (login): `assistenza2025`.
 
-## Deploy su GitHub Pages
-1. Copia tutti i file nel tuo repo (branch pubblicata da Pages).
-2. Imposta `index.html` come homepage (Pages → Settings).
-3. Visita `/login.html` per accedere alla pagina protetta `/staff.html`.
-
-## Personalizzazione
-- Cambia colori/tonalità in `:root` dentro `styles.css`.
-- Cambia la password demo in `login.html` (costante `STAFF_PASSWORD`).
-- Modifica le sezioni di servizi/contatti in `index.html`.
+⚠️ Nota: tutto è client-side per la demo. Per produzione serve backend o provider auth + database.

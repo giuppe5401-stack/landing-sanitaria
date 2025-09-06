@@ -6,9 +6,7 @@
   <title>Area riservata — Login</title>
   <link rel="stylesheet" href="styles.css">
   <script>
-  // Configurazione semplice: cambiare questa password per l'accesso.
-  // ATTENZIONE: è solo un gate lato client, NON usare per dati sensibili.
-  const STAFF_PASSWORD = "assistenza2025";
+  const STAFF_PASSWORD = "assistenza2025"; // demo lato client
   function doLogin(e){
     e.preventDefault();
     const p = document.getElementById('password').value.trim();
@@ -17,9 +15,7 @@
       const redir = new URLSearchParams(location.search).get('next') || 'staff.html';
       location.href = redir;
     }else{
-      const msg = document.getElementById('msg');
-      msg.textContent = "Password errata";
-      msg.style.color = '#c1121f';
+      const msg = document.getElementById('msg'); msg.textContent = "Password errata"; msg.style.color = '#c1121f';
     }
   }
   </script>
@@ -34,7 +30,7 @@
   <main class="centered">
     <div class="card-lg">
       <h2>Accesso area riservata</h2>
-      <p class="note">Accesso riservato al personale. (Demo statica: controllo lato client)</p>
+      <p class="note">Demo statica: non adatta a dati sensibili.</p>
       <form onsubmit="doLogin(event)">
         <label for="password">Password</label>
         <input id="password" class="input" type="password" placeholder="Inserisci password" required>

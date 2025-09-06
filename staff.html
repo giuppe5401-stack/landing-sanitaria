@@ -6,15 +6,116 @@
   <title>Area riservata — Gestione</title>
   <link rel="stylesheet" href="styles.css">
   <script>
-  // Redirect se non autenticato (controllo client-side)
+  // Gate di accesso lato client
   if(localStorage.getItem('staff_authed') !== '1'){
     const next = encodeURIComponent(location.pathname.replace(/^\//,''));
     location.replace('login.html?next=' + next);
   }
-  function logout(){
-    localStorage.removeItem('staff_authed');
-    location.href = 'login.html';
+
+  // --- Dati demo ---
+  const mezzi = [
+    { id:'AMB-1', tipo:'Ambulanza BLS', stato:'Disponibile' },
+    { id:'AMB-2', tipo:'Ambulanza ALS', stato:'In missione' },
+    { id:'AMB-3', tipo:'Auto sanitaria', stato:'Manutenzione' }
+  ];
+
+  function loadPrenotazioni(){
+    try{ return JSON.parse(localStorage.getItem('prenotazioni')||'[]'); }catch(e){ return []; }
   }
+  function savePrenotazioni(list){ localStorage.setItem('prenotazioni', JSON.stringify(list)); }
+
+  function renderMezzi(){
+    const tbody = document.querySelector('#tbl-mezzi tbody'); tbody.innerHTML='';
+    mezzi.forEach(m => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = \`
+        <td><strong>\${m.id}</strong><div class="note">\${m.tipo}</div></td>
+        <td>\${badgeStato(m.stato)}</td>
+      \`;
+      tbody.appendChild(tr);
+    });
+    // popola select mezzo
+    const sel = document.getElementById('mezzo');
+    sel.innerHTML = mezzi.map(m=>\`<option value="\${m.id}">\${m.id} — \${m.tipo}</option>\`).join('');
+  }
+
+  function badgeStato(s){
+    let cls='muted'; if(s==='Disponibile') cls='ok'; else if(s==='In missione') cls='warn'; else if(s==='Manutenzione') cls='danger';
+    return '<span class="badge '+cls+'">'+s+'</span>';
+  }
+
+  // --- Prenotazioni ---
+  function renderPrenotazioni(){
+    const list = loadPrenotazioni();
+    const tbody = document.querySelector('#tbl-prenotazioni tbody'); tbody.innerHTML='';
+    list.sort((a,b)=> new Date(a.start) - new Date(b.start));
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      const start = new Date(p.start); const end = new Date(p.end);
+      tr.innerHTML = \`
+        <td><strong>\${p.mezzo}</strong><div class="note">\${p.paziente||''}</div></td>
+        <td>\${start.toLocaleDateString()}<div class="note">\${start.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} - \${end.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div></td>
+        <td>\${p.da}</td>
+        <td>\${p.a}</td>
+        <td>\${p.ausili||''}</td>
+      \`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('countPren').textContent = list.length;
+  }
+
+  function addPrenotazione(e){
+    e.preventDefault();
+    const mezzo = document.getElementById('mezzo').value;
+    const data = document.getElementById('data').value;
+    const ora = document.getElementById('ora').value;
+    const durata = parseFloat(document.getElementById('durata').value || '1');
+    const da = document.getElementById('da').value.trim();
+    const a = document.getElementById('a').value.trim();
+    const paziente = document.getElementById('paziente').value.trim();
+    const ausili = document.getElementById('ausili').value.trim();
+
+    if(!data || !ora || !mezzo || !da || !a){
+      alert('Compila mezzo, data, ora, da, a.'); return;
+    }
+    const start = new Date(\`\${data}T\${ora}:00\`);
+    const end = new Date(start.getTime() + durata*60*60*1000);
+
+    const list = loadPrenotazioni();
+    const conflict = list.some(p => p.mezzo===mezzo && overlaps(start,end, new Date(p.start), new Date(p.end)));
+    if(conflict){
+      if(!confirm('⚠️ Il mezzo ha già una prenotazione in quell'orario. Vuoi aggiungere comunque?')) return;
+    }
+    list.push({mezzo, start, end, da, a, paziente, ausili});
+    savePrenotazioni(list);
+    (e.target).reset();
+    renderPrenotazioni();
+  }
+
+  function overlaps(s1,e1,s2,e2){ return s1 < e2 && e1 > s2; }
+
+  function exportCSV(){
+    const list = loadPrenotazioni();
+    const rows = [['Mezzo','Data','Ora inizio','Ora fine','Da','A','Paziente','Ausili']];
+    list.forEach(p=>{
+      const s=new Date(p.start), e=new Date(p.end);
+      rows.push([p.mezzo, s.toLocaleDateString(), s.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), e.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), p.da, p.a, p.paziente||'', p.ausili||'']);
+    });
+    const csv = rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='prenotazioni.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderMezzi();
+    renderPrenotazioni();
+    document.getElementById('formPren').addEventListener('submit', addPrenotazione);
+    document.getElementById('btnExport').addEventListener('click', exportCSV);
+  });
+
+  function logout(){ localStorage.removeItem('staff_authed'); location.href='login.html'; }
   </script>
 </head>
 <body>
@@ -28,56 +129,80 @@
   <main class="section">
     <div class="container">
       <h2>Dashboard operativa</h2>
-      <p class="note">Esempio dimostrativo. Qui potrai inserire richieste, pianificare trasporti, gestire mezzi e note per i pazienti.</p>
 
+      <!-- Sezione Mezzi -->
       <div class="card" style="margin:10px 0 20px;">
-        <h3>Nuova richiesta di trasporto</h3>
-        <div class="form-row">
-          <div class="field">
-            <label for="paziente">Paziente</label>
-            <input id="paziente" class="input" placeholder="Nome e Cognome">
-          </div>
-          <div class="field">
-            <label for="data">Data</label>
-            <input id="data" type="date" class="input">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="indirizzo">Indirizzo di partenza</label>
-            <input id="indirizzo" class="input" placeholder="Via, n°, piano, ascensore">
-          </div>
-          <div class="field">
-            <label for="destinazione">Destinazione</label>
-            <input id="destinazione" class="input" placeholder="Ospedale/clinica">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="ausili">Ausili</label>
-            <input id="ausili" class="input" placeholder="Sedia, ossigeno, barella...">
-          </div>
-          <div class="field">
-            <label for="note">Note</label>
-            <input id="note" class="input" placeholder="Indicazioni aggiuntive">
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn">Salva richiesta</button>
-        </div>
+        <h3>Gestione mezzi</h3>
+        <table id="tbl-mezzi" class="table">
+          <thead><tr><th>Mezzo</th><th>Stato</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="note">Stati: <span class="badge ok">Disponibile</span> <span class="badge warn">In missione</span> <span class="badge danger">Manutenzione</span></p>
       </div>
 
-      <div class="card">
-        <h3>Richieste recenti</h3>
-        <table class="table">
-          <thead><tr><th>Paziente</th><th>Data</th><th>Da</th><th>A</th><th>Ausili</th></tr></thead>
-          <tbody>
-            <tr><td>Mario Rossi</td><td>2025-09-09</td><td>Via Roma 10 (2°)</td><td>Galliera</td><td>Sedia</td></tr>
-            <tr><td>Lucia Bianchi</td><td>2025-09-10</td><td>Via XX Settembre</td><td>San Martino</td><td>Ossigeno</td></tr>
-          </tbody>
+      <!-- Sezione Prenotazioni -->
+      <div class="card" style="margin:10px 0 20px;">
+        <h3>Prenotazioni <span class="tag" id="countPren">0</span></h3>
+
+        <form id="formPren">
+          <div class="form-row">
+            <div class="field">
+              <label for="mezzo">Mezzo</label>
+              <select id="mezzo" class="input"></select>
+            </div>
+            <div class="field">
+              <label for="data">Data</label>
+              <input id="data" type="date" class="input" required>
+            </div>
+            <div class="field">
+              <label for="ora">Ora inizio</label>
+              <input id="ora" type="time" class="input" required>
+            </div>
+            <div class="field">
+              <label for="durata">Durata (ore)</label>
+              <input id="durata" type="number" min="0.5" step="0.5" value="2" class="input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="da">Da</label>
+              <input id="da" class="input" placeholder="Indirizzo di partenza" required>
+            </div>
+            <div class="field">
+              <label for="a">A</label>
+              <input id="a" class="input" placeholder="Destinazione" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="paziente">Paziente</label>
+              <input id="paziente" class="input" placeholder="Nome e Cognome">
+            </div>
+            <div class="field">
+              <label for="ausili">Ausili</label>
+              <input id="ausili" class="input" placeholder="Sedia, ossigeno, barella...">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-outline btn" id="btnExport">Esporta CSV</button>
+            <button class="btn" type="submit">Aggiungi prenotazione</button>
+          </div>
+        </form>
+
+        <table id="tbl-prenotazioni" class="table" style="margin-top:16px;">
+          <thead><tr><th>Mezzo / Paziente</th><th>Data / Orari</th><th>Da</th><th>A</th><th>Ausili</th></tr></thead>
+          <tbody></tbody>
         </table>
+        <p class="note">Le prenotazioni sono salvate nel browser (localStorage) a scopo demo.</p>
       </div>
     </div>
   </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 Assistenza Genova — Area riservata</div>
+  </footer>
 </body>
 </html>
