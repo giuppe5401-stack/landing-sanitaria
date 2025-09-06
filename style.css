@@ -9,3 +9,8 @@ body{background:#ffe3ec;color:#0d47a1;font-family:sans-serif;}
 .hero{background:#fff;padding:20px;border-radius:12px;}
 .title{font-size:28px;margin:0 0 8px;}
 .subtitle{margin:0;color:#10458f;}
+.card-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:22px;}
+.card{background:#fff;border:1px solid #e6e6e6;border-radius:12px;padding:18px;}
+.footer{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px;border-top:1px solid #e6e6e6;background:#fff;}
+.btn{display:inline-block;padding:10px 14px;border-radius:999px;background:#0d47a1;color:#fff;text-decoration:none;font-weight:600;}
+.btn:hover{filter:brightness(1.1);}
