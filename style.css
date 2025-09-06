@@ -6,7 +6,7 @@ body.bg{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,
 /* Header */
 .header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:16px;background:rgba(255,255,255,.6);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
 .logo-wrap{display:flex;align-items:center;gap:12px}
-.logo{height:42px;width:auto}.logo.small{height:28px}.cross{height:32px;width:auto;opacity:.9}.brand{font-weight:700}
+.logo{height:42px;width:auto}.logo.small{height:28px}.brand{font-weight:700}
 .nav-link{margin-right:12px;text-decoration:none;color:var(--text)} .nav-link:hover{text-decoration:underline}
 
 /* Layout */
