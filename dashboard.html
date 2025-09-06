@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard – Area Riservata</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <header class="header">
+    <div class="logo-wrap">
+      <img src="img/logo.svg" alt="" class="logo small" />
+      <span class="brand">Area Riservata</span>
+    </div>
+    <nav>
+      <a class="nav-link" href="personale.html">Turni &amp; Pazienti</a>
+      <button class="btn ghost" id="logoutBtn" type="button">Esci</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Dashboard del personale</h1>
+      <p class="muted">Accesso limitato al personale autorizzato. I dati qui presenti sono solo di esempio.</p>
+    </section>
+
+    <section class="grid-2">
+      <article class="card">
+        <h2>Gestione mezzi</h2>
+        <ul id="mezziList" class="list"></ul>
+        <div class="inline-form">
+          <input id="mezzoInput" type="text" placeholder="Aggiungi mezzo (es. Ambulanza 3)" />
+          <button id="addMezzoBtn" class="btn" type="button">Aggiungi</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Prenotazioni</h2>
+        <ul id="prenotazioniList" class="list"></ul>
+        <div class="inline-form">
+          <input id="prenInput" type="text" placeholder="Nuova prenotazione (es. Mario Rossi - 10:30)" />
+          <button id="addPrenBtn" class="btn" type="button">Aggiungi</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Informazioni riservate</h2>
+      <p class="muted">Esempio: note interne, turni, esigenze pazienti (ossigeno, piano, ascensore, deambulazione).</p>
+    </section>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

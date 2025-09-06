@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login – Area Riservata</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <main class="container narrow">
+    <section class="card">
+      <h1>Accesso area riservata</h1>
+      <p class="muted">Demo di accesso locale. Non usare in produzione senza un vero backend.</p>
+      <form id="loginForm" class="form">
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" required autocomplete="username" />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required autocomplete="current-password" />
+        </label>
+        <button class="btn" type="submit">Accedi</button>
+      </form>
+      <p class="muted small">Credenziali demo: <code>staff</code> / <code>secure123</code></p>
+      <p><a href="index.html">← Torna alla landing</a></p>
+    </section>
+  </main>
+  <script src="script.js" defer></script>
+</body>
+</html>

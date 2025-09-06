@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operativo – Turni & Schede Pazienti</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <header class="header">
+    <div class="logo-wrap">
+      <img src="img/logo.svg" alt="" class="logo small" />
+      <span class="brand">Operativo</span>
+    </div>
+    <nav>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <button class="btn ghost" id="logoutBtn" type="button">Esci</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Turni &amp; Schede Pazienti</h1>
+      <p class="muted">Sezione riservata per l'organizzazione dei turni e la raccolta dati pazienti.</p>
+    </section>
+
+    <section class="grid-2">
+      <article class="card">
+        <h2>Gestione Turni</h2>
+        <form id="turniForm" class="form">
+          <label>
+            <span>Volontario / Operatore</span>
+            <input type="text" id="turnoNome" placeholder="Es. Mario Rossi" required />
+          </label>
+          <label>
+            <span>Data</span>
+            <input type="date" id="turnoData" required />
+          </label>
+          <label>
+            <span>Orario</span>
+            <input type="text" id="turnoOrario" placeholder="08:00–14:00" required />
+          </label>
+          <button class="btn" type="submit">Aggiungi turno</button>
+        </form>
+        <ul id="turniList" class="list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Scheda Paziente</h2>
+        <form id="pazForm" class="form">
+          <label>
+            <span>Nome e Cognome</span>
+            <input type="text" id="pazNome" placeholder="Es. Anna Bianchi" required />
+          </label>
+          <label>
+            <span>Piano</span>
+            <select id="pazPiano" required>
+              <option value="" selected disabled>Scegli piano</option>
+              <option value="0">0°</option>
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+              <option value="5">5°</option>
+              <option value="6">6°</option>
+              <option value="7">7°</option>
+              <option value="8">8°</option>
+              <option value="9">9°</option>
+              <option value="10">10°</option>
+            </select>
+          </label>
+          <label>
+            <span>Ascensore</span>
+            <select id="pazAsc" required>
+              <option value="" selected disabled>Scegli</option>
+              <option>Sì</option>
+              <option>No</option>
+            </select>
+          </label>
+          <label>
+            <span>Deambulazione</span>
+            <select id="pazDeamb" required>
+              <option value="" selected disabled>Scegli</option>
+              <option>Autonomo</option>
+              <option>Assistito</option>
+              <option>Barella</option>
+              <option>Sedia a rotelle</option>
+            </select>
+          </label>
+          <label>
+            <span>Ossigeno</span>
+            <select id="pazO2" required>
+              <option value="" selected disabled>Scegli</option>
+              <option>Sì</option>
+              <option>No</option>
+            </select>
+          </label>
+          <button class="btn" type="submit">Salva scheda</button>
+        </form>
+        <ul id="pazList" class="list"></ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
