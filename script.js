@@ -61,7 +61,7 @@ function setupPersonale(){
       tList.appendChild(li);
     });
   }
-  function renderPaz(){
+  function renderPaz(query=""){
     if(!pList) return; pList.innerHTML = "";
     load(K_PAZ).forEach(p => {
       const li = document.createElement("li");
@@ -290,5 +290,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // PERSONALE page
-  if (location.pathname.endsWith("personale.html")) setupPersonale();
+  if (location.pathname.endsWith("personale.html")) { setupPersonale();
+  // Search filter for pazienti
+  const pazSearch = document.getElementById("pazSearch");
+  const pazCount = document.getElementById("pazCount");
+  function updateCount(q=""){
+    const n = (load("pazienti").filter(p=>{
+      const hay = (p.nome+" "+(p.tel||"")+" "+(p.indirizzo||"")+" "+(p.deamb||"")+" "+(p.o2||"")+" "+(p.ausili||"")+" "+(p.piano||"")+" "+(p.asc||"")).toLowerCase();
+      return hay.includes(q.toLowerCase());
+    })).length;
+    pazCount.textContent = n + (n === 1 ? " risultato" : " risultati");
+  }
+  function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(*a), ms); }; }
+  const doFilter = debounce((q)=>{ renderPaz(q); updateCount(q); }, 120);
+  if(pazSearch){
+    pazSearch.addEventListener("input", (e)=> doFilter(e.target.value));
+    // initial count
+    updateCount(""); 
+  }
+ }
 });

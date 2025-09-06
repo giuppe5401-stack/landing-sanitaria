@@ -38,44 +38,82 @@
 
       <article class="card">
         <h2>Scheda Paziente</h2>
-        <form id="pazForm" class="form">
-          <label><span>Nome e Cognome</span><input type="text" id="pazNome" required /></label>
-          <label><span>Piano</span>
-            <select id="pazPiano" required>
-              <option value="" disabled selected>Scegli piano</option>
-              <option value='0'>0°</option>
-<option value='1'>1°</option>
-<option value='2'>2°</option>
-<option value='3'>3°</option>
-<option value='4'>4°</option>
-<option value='5'>5°</option>
-<option value='6'>6°</option>
-<option value='7'>7°</option>
-<option value='8'>8°</option>
-<option value='9'>9°</option>
-<option value='10'>10°</option>
-            </select>
-          </label>
-          <label><span>Ascensore</span>
-            <select id="pazAsc" required>
-              <option value="" disabled selected>Scegli</option>
-              <option>Sì</option><option>No</option>
-            </select>
-          </label>
-          <label><span>Deambulazione</span>
-            <select id="pazDeamb" required>
-              <option value="" disabled selected>Scegli</option>
-              <option>Autonomo</option><option>Assistito</option><option>Barella</option><option>Sedia a rotelle</option>
-            </select>
-          </label>
-          <label><span>Ossigeno</span>
-            <select id="pazO2" required>
-              <option value="" disabled selected>Scegli</option>
-              <option>Sì</option><option>No</option>
-            </select>
-          </label>
-          <button class="btn" type="submit">Salva scheda</button>
+
+        <form id="pazForm" class="form form-paz" novalidate>
+          <fieldset class="fs">
+            <legend>Anagrafica</legend>
+            <div class="grid-2col">
+              <label><span>Nome e Cognome *</span><input type="text" id="pazNome" autocomplete="name" required /><small class="err" data-err-for="pazNome"></small></label>
+              <label><span>Telefono</span><input type="tel" id="pazTel" inputmode="tel" placeholder="+39 ..." /></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend>Ubicazione</legend>
+            <label><span>Indirizzo (opz.)</span><input type="text" id="pazAddr" autocomplete="address-line1" placeholder="Via, n°, scala, interno" /></label>
+            <div class="grid-3col">
+              <label><span>Piano *</span>
+                <select id="pazPiano" required>
+                  <option value="" disabled selected>Scegli piano</option>
+                  <option>0</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+                </select>
+                <small class="err" data-err-for="pazPiano"></small>
+              </label>
+              <label><span>Ascensore *</span>
+                <select id="pazAsc" required><option value="" disabled selected>Scegli</option><option>Sì</option><option>No</option></select>
+                <small class="err" data-err-for="pazAsc"></small>
+              </label>
+              <label><span>Citofono (opz.)</span><input type="text" id="pazCit" placeholder="es. Interno 12" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend>Condizioni</legend>
+            <div class="grid-3col">
+              <label><span>Deambulazione *</span>
+                <select id="pazDeamb" required>
+                  <option value="" disabled selected>Scegli</option>
+                  <option>Autonomo</option><option>Assistito</option><option>Barella</option><option>Sedia a rotelle</option>
+                </select>
+                <small class="err" data-err-for="pazDeamb"></small>
+              </label>
+              <label><span>Ossigeno *</span>
+                <select id="pazO2" required><option value="" disabled selected>Scegli</option><option>Sì</option><option>No</option></select>
+                <small class="err" data-err-for="pazO2"></small>
+              </label>
+              <label><span>Ausili (opz.)</span><input type="text" id="pazAus" placeholder="es. carrozzina, bastone" /></label>
+            </div>
+            <label><span>Note operative (opz.)</span><textarea id="pazNote" rows="3" placeholder="Codice cancello, cane in casa, scale strette, ecc."></textarea></label>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend>Consensi</legend>
+            <label class="consent"><input type="checkbox" id="pazConsenso" required /> Confermo il consenso informato per la gestione dei dati ai fini del servizio. *</label>
+            <small class="err" data-err-for="pazConsenso"></small>
+          </fieldset>
+
+          <div class="inline-form">
+            <button class="btn" type="submit">Salva scheda</button>
+            <button class="btn ghost" type="reset">Pulisci</button>
+          </div>
         </form>
+
+        
+        <div class="inline-form">
+          <input type="search" id="pazSearch" placeholder="Cerca paziente (nome, indirizzo, piano, deambulazione...)" aria-label="Cerca paziente" />
+          <span class="badge" id="pazCount" aria-live="polite"></span>
+        </div>
+
         <ul id="pazList" class="list interactive"></ul>
       </article>
     </section>
