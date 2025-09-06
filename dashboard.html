@@ -19,7 +19,6 @@
   </header>
 
   <main class="container">
-    <!-- KPI -->
     <section class="kpi-grid" aria-label="Indicatori principali">
       <div class="kpi-card"><div class="kpi-label">Trasporti oggi</div><div class="kpi-value" id="kpiTrasporti">0</div></div>
       <div class="kpi-card"><div class="kpi-label">Turni attivi</div><div class="kpi-value" id="kpiTurni">0</div></div>
@@ -27,7 +26,6 @@
       <div class="kpi-card"><div class="kpi-label">Avvisi</div><div class="kpi-value" id="kpiAvvisi">0</div></div>
     </section>
 
-    <!-- Colonne principali -->
     <section class="grid-3">
       <article class="card">
         <h2>Turni di oggi</h2>
@@ -36,6 +34,9 @@
           <input id="turnoNomeQuick" type="text" placeholder="Operatore" aria-label="Nome operatore" />
           <input id="turnoOrarioQuick" type="text" placeholder="08:00–14:00" aria-label="Orario" />
           <button id="addTurnoQuick" class="btn" type="button">Aggiungi</button>
+        </div>
+        <div class="inline-form">
+          <button id="exportTurni" class="btn ghost" type="button">Esporta Turni (CSV)</button>
         </div>
       </article>
 
@@ -46,6 +47,9 @@
           <input id="traspPaziente" type="text" placeholder="Paziente (es. Rossi M.)" aria-label="Paziente" />
           <input id="traspOra" type="time" aria-label="Ora" />
           <button id="addTrasporto" class="btn" type="button">Aggiungi</button>
+        </div>
+        <div class="inline-form">
+          <button id="exportTrasporti" class="btn ghost" type="button">Esporta Trasporti (CSV)</button>
         </div>
       </article>
 
@@ -78,6 +82,19 @@
         </div>
         <p class="muted small">I dati sono salvati nel browser (localStorage) solo per la demo.</p>
       </article>
+    </section>
+
+    <section class="card">
+      <h2>Magazzino (presidi e scorte)</h2>
+      <ul id="magList" class="list interactive"></ul>
+      <div class="inline-form">
+        <input id="magNome" type="text" placeholder="Articolo (es. guanti M)" aria-label="Articolo" />
+        <input id="magQta" type="number" min="0" placeholder="Qtà" aria-label="Quantità" />
+        <input id="magScad" type="date" aria-label="Scadenza" />
+        <button id="magAdd" class="btn" type="button">Aggiungi</button>
+        <button id="exportMag" class="btn ghost" type="button">Esporta Magazzino (CSV)</button>
+      </div>
+      <p class="muted small">Suggerimento: mantenere scorte minime e controllare le scadenze sotto i 30 giorni.</p>
     </section>
   </main>
 

@@ -4,7 +4,6 @@ const DEMO_PASS = "secure123";
 const AUTH_KEY = "demo_auth";
 
 function isAuthed(){ return localStorage.getItem(AUTH_KEY) === "true"; }
-
 function requireAuth(){
   const onDashboard = location.pathname.endsWith("dashboard.html");
   const onPersonale = location.pathname.endsWith("personale.html");
@@ -12,7 +11,6 @@ function requireAuth(){
   if((onDashboard || onPersonale) && !isAuthed()) location.replace("login.html");
   if(onLogin && isAuthed()) location.replace("dashboard.html");
 }
-
 function handleLogin(e){
   e.preventDefault();
   const u = e.currentTarget.username.value.trim();
@@ -24,19 +22,32 @@ function handleLogin(e){
     alert("Credenziali errate. Usa staff / secure123 (solo demo).");
   }
 }
-
 function handleLogout(){ localStorage.removeItem(AUTH_KEY); location.replace("login.html"); }
 
-// Helpers storage
+// Helpers
 const load = (k) => JSON.parse(localStorage.getItem(k) || "[]");
 const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 const uid = () => Math.random().toString(36).slice(2,9);
 
-// PERSONALE PAGE (gestione turni/pazienti)
-function setupPersonale(){
-  const K_TURNI = "turni";
-  const K_PAZ = "pazienti";
+// CSV export
+function toCSV(arr){
+  if(!arr.length) return "";
+  const keys = Array.from(arr.reduce((s,o)=>{Object.keys(o).forEach(k=>s.add(k));return s;}, new Set()));
+  const esc = (v) => (v==null? "" : String(v).replace(/"/g,'""'));
+  const rows = [keys.join(",")].concat(arr.map(o => keys.map(k=>`"${esc(o[k])}"`).join(",")));
+  return rows.join("\n");
+}
+function download(filename, text){
+  const blob = new Blob([text], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
 
+// PERSONALE PAGE
+function setupPersonale(){
+  const K_TURNI = "turni"; const K_PAZ = "pazienti";
   const tForm = document.getElementById("turniForm");
   const tList = document.getElementById("turniList");
   const pForm = document.getElementById("pazForm");
@@ -46,7 +57,7 @@ function setupPersonale(){
     if(!tList) return; tList.innerHTML = "";
     load(K_TURNI).forEach(item => {
       const li = document.createElement("li");
-      li.innerHTML = `<span>${item.nome} — ${item.data} — ${item.orario}</span><button class="btn ghost" data-del="${item.id}">Elimina</button>`;
+      li.innerHTML = `<span>${item.nome} — ${item.data} — ${item.orario}</span><button class="btn ghost" data-del="${item.id}">×</button>`;
       tList.appendChild(li);
     });
   }
@@ -54,7 +65,7 @@ function setupPersonale(){
     if(!pList) return; pList.innerHTML = "";
     load(K_PAZ).forEach(p => {
       const li = document.createElement("li");
-      li.innerHTML = `<span>${p.nome} — Piano: ${p.piano}°, Ascensore: ${p.asc}, Deambulazione: ${p.deamb}, O2: ${p.o2}</span><button class="btn ghost" data-delp="${p.id}">Elimina</button>`;
+      li.innerHTML = `<span>${p.nome} — Piano: ${p.piano}°, Ascensore: ${p.asc}, Deambulazione: ${p.deamb}, O2: ${p.o2}</span><button class="btn ghost" data-delp="${p.id}">×</button>`;
       pList.appendChild(li);
     });
   }
@@ -83,51 +94,65 @@ function setupPersonale(){
       e.target.reset(); renderPaz();
     });
   }
-
-  // Delete handlers (delegation)
   if(tList){
-    tList.addEventListener("click", (e) => {
-      const id = e.target.getAttribute("data-del");
-      if(!id) return;
-      const arr = load(K_TURNI).filter(x => x.id !== id); save(K_TURNI, arr); renderTurni();
+    tList.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-del"); if(!id) return;
+      save(K_TURNI, load(K_TURNI).filter(x=>x.id!==id)); renderTurni();
     });
   }
   if(pList){
-    pList.addEventListener("click", (e) => {
-      const id = e.target.getAttribute("data-delp");
-      if(!id) return;
-      const arr = load(K_PAZ).filter(x => x.id !== id); save(K_PAZ, arr); renderPaz();
+    pList.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-delp"); if(!id) return;
+      save(K_PAZ, load(K_PAZ).filter(x=>x.id!==id)); renderPaz();
     });
   }
-
   renderTurni(); renderPaz();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   requireAuth();
 
-  // Login/Logout
+  // Login
   const loginForm = document.getElementById("loginForm");
   if (loginForm) loginForm.addEventListener("submit", handleLogin);
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) logoutBtn.addEventListener("click", handleLogout);
 
+  // Contact form (landing)
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm){
+    const res = document.getElementById("contactResult");
+    contactForm.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      const rec = {
+        id: uid(),
+        nome: document.getElementById("cNome").value.trim(),
+        telefono: document.getElementById("cTelefono").value.trim(),
+        messaggio: document.getElementById("cMessaggio").value.trim(),
+        consenso: document.getElementById("cConsenso").checked,
+        data: new Date().toISOString()
+      };
+      const arr = load("contatti"); arr.push(rec); save("contatti", arr);
+      e.target.reset();
+      res.textContent = "Richiesta inviata. Ti ricontatteremo al più presto.";
+      setTimeout(()=>res.textContent="", 5000);
+    });
+  }
+
   // ===== DASHBOARD =====
   if (location.pathname.endsWith("dashboard.html")) {
-    const K_TURNI = "turni";
-    const K_MEZZI = "mezzi";
-    const K_TRASPORTI = "trasporti";
-    const K_AVVISI = "avvisi";
+    const K_TURNI="turni", K_MEZZI="mezzi", K_TRASPORTI="trasporti", K_AVVISI="avvisi", K_MAG="magazzino";
 
+    // Elements
     const turniOggi = document.getElementById("turniOggi");
     const addTurnoQuick = document.getElementById("addTurnoQuick");
     const turnoNomeQuick = document.getElementById("turnoNomeQuick");
     const turnoOrarioQuick = document.getElementById("turnoOrarioQuick");
+    const exportTurni = document.getElementById("exportTurni");
 
     const trasportiList = document.getElementById("trasportiList");
     const traspPaziente = document.getElementById("traspPaziente");
     const traspOra = document.getElementById("traspOra");
     const addTrasporto = document.getElementById("addTrasporto");
+    const exportTrasporti = document.getElementById("exportTrasporti");
 
     const mezziDash = document.getElementById("mezziDash");
     const mezzoDash = document.getElementById("mezzoDash");
@@ -137,15 +162,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const avvisoInput = document.getElementById("avvisoInput");
     const addAvviso = document.getElementById("addAvviso");
 
+    // Magazzino
+    const magList = document.getElementById("magList");
+    const magNome = document.getElementById("magNome");
+    const magQta = document.getElementById("magQta");
+    const magScad = document.getElementById("magScad");
+    const magAdd = document.getElementById("magAdd");
+    const exportMag = document.getElementById("exportMag");
+
     const kpiTrasporti = document.getElementById("kpiTrasporti");
     const kpiTurni = document.getElementById("kpiTurni");
     const kpiMezzi = document.getElementById("kpiMezzi");
     const kpiAvvisi = document.getElementById("kpiAvvisi");
 
-    function todayStr(){ return new Date().toISOString().slice(0,10); }
+    const todayStr = () => new Date().toISOString().slice(0,10);
 
     function renderTurniOggi(){
-      if (!turniOggi) return;
       const items = load(K_TURNI).filter(t => t.data === todayStr());
       turniOggi.innerHTML = items.length ? "" : "<li class='muted'>Nessun turno inserito per oggi.</li>";
       items.forEach(t => {
@@ -153,11 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `<span>${t.nome} — ${t.orario}</span><span class="badge">oggi</span>`;
         turniOggi.appendChild(li);
       });
-      if(kpiTurni) kpiTurni.textContent = String(items.length);
+      kpiTurni.textContent = String(items.length);
     }
-
     function renderTrasporti(){
-      if (!trasportiList) return;
       const items = load(K_TRASPORTI).sort((a,b) => (a.ora||"").localeCompare(b.ora||""));
       trasportiList.innerHTML = items.length ? "" : "<li class='muted'>Nessun trasporto pianificato.</li>";
       items.forEach(t => {
@@ -166,11 +196,9 @@ document.addEventListener("DOMContentLoaded", () => {
         trasportiList.appendChild(li);
       });
       const nToday = items.filter(t => (t.data||todayStr()) === todayStr()).length;
-      if(kpiTrasporti) kpiTrasporti.textContent = String(nToday);
+      kpiTrasporti.textContent = String(nToday);
     }
-
     function renderMezzi(){
-      if (!mezziDash) return;
       const items = load(K_MEZZI);
       mezziDash.innerHTML = items.length ? "" : "<li class='muted'>Nessun mezzo registrato.</li>";
       items.forEach(m => {
@@ -178,11 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `<span>${m.nome||m}</span><button class="btn ghost" data-delm="${m.id||m}">×</button>`;
         mezziDash.appendChild(li);
       });
-      if(kpiMezzi) kpiMezzi.textContent = String(items.length);
+      kpiMezzi.textContent = String(items.length);
     }
-
     function renderAvvisi(){
-      if (!avvisiList) return;
       const items = load(K_AVVISI);
       avvisiList.innerHTML = items.length ? "" : "<li class='muted'>Nessun avviso.</li>";
       items.forEach(a => {
@@ -190,80 +216,79 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `<span>${a.testo||a}</span><button class="btn ghost" data-delv="${a.id||a}">×</button>`;
         avvisiList.appendChild(li);
       });
-      if(kpiAvvisi) kpiAvvisi.textContent = String(items.length);
+      kpiAvvisi.textContent = String(items.length);
+    }
+    function daysUntil(dateStr){
+      if(!dateStr) return null;
+      const d = new Date(dateStr); const now = new Date();
+      return Math.ceil((d - now) / (1000*60*60*24));
+    }
+    function renderMagazzino(){
+      if(!magList) return;
+      const items = load(K_MAG);
+      magList.innerHTML = items.length ? "" : "<li class='muted'>Nessun articolo a magazzino.</li>";
+      items.forEach(x => {
+        const days = daysUntil(x.scad);
+        let badge = "";
+        if(days !== null){
+          if(days < 0) badge = `<span class="badge">scaduto</span>`;
+          else if(days <= 30) badge = `<span class="badge">scade in ${days}g</span>`;
+        }
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${x.nome} — Qtà: ${x.qta}${badge? " " + badge : ""}</span><button class="btn ghost" data-delmag="${x.id}">×</button>`;
+        magList.appendChild(li);
+      });
     }
 
-    // Handlers add
+    // Adds
     if (addTurnoQuick) addTurnoQuick.addEventListener("click", () => {
       const nome = (turnoNomeQuick.value || "").trim();
       const orario = (turnoOrarioQuick.value || "").trim();
       if (!nome || !orario) return;
-      const arr = load(K_TURNI);
-      arr.push({ id:uid(), nome, data: todayStr(), orario });
-      save(K_TURNI, arr);
-      turnoNomeQuick.value = ""; turnoOrarioQuick.value = "";
-      renderTurniOggi();
+      const arr = load(K_TURNI); arr.push({ id:uid(), nome, data: todayStr(), orario }); save(K_TURNI, arr);
+      turnoNomeQuick.value = ""; turnoOrarioQuick.value = ""; renderTurniOggi();
     });
-
     if (addTrasporto) addTrasporto.addEventListener("click", () => {
       const paziente = (traspPaziente.value || "").trim();
       const ora = traspOra.value || "";
       if (!paziente) return;
-      const arr = load(K_TRASPORTI);
-      arr.push({ id:uid(), paziente, ora, data: todayStr() });
-      save(K_TRASPORTI, arr);
-      traspPaziente.value = ""; traspOra.value = "";
-      renderTrasporti();
+      const arr = load(K_TRASPORTI); arr.push({ id:uid(), paziente, ora, data: todayStr() }); save(K_TRASPORTI, arr);
+      traspPaziente.value = ""; traspOra.value = ""; renderTrasporti();
     });
-
     if (addMezzoDash) addMezzoDash.addEventListener("click", () => {
-      const v = (mezzoDash.value || "").trim();
-      if (!v) return;
+      const v = (mezzoDash.value || "").trim(); if (!v) return;
       const arr = load(K_MEZZI); arr.push({id:uid(), nome:v}); save(K_MEZZI, arr);
       mezzoDash.value = ""; renderMezzi();
     });
-
     if (addAvviso) addAvviso.addEventListener("click", () => {
-      const v = (avvisoInput.value || "").trim();
-      if (!v) return;
+      const v = (avvisoInput.value || "").trim(); if (!v) return;
       const arr = load(K_AVVISI); arr.push({id:uid(), testo:v}); save(K_AVVISI, arr);
       avvisoInput.value = ""; renderAvvisi();
     });
-
-    // Delete with delegation
-    if (trasportiList) trasportiList.addEventListener("click", (e)=>{
-      const id = e.target.getAttribute("data-deltr"); if(!id) return;
-      const arr = load(K_TRASPORTI).filter(x => (x.id||"") !== id); save(K_TRASPORTI, arr); renderTrasporti();
-    });
-    if (mezziDash) mezziDash.addEventListener("click", (e)=>{
-      const id = e.target.getAttribute("data-delm"); if(!id) return;
-      const arr = load(K_MEZZI).filter(x => (x.id||x) !== id); save(K_MEZZI, arr); renderMezzi();
-    });
-    if (avvisiList) avvisiList.addEventListener("click", (e)=>{
-      const id = e.target.getAttribute("data-delv"); if(!id) return;
-      const arr = load(K_AVVISI).filter(x => (x.id||x) !== id); save(K_AVVISI, arr); renderAvvisi();
+    if (magAdd) magAdd.addEventListener("click", () => {
+      const nome = (magNome.value || "").trim();
+      const qta = Number(magQta.value || 0);
+      const scad = magScad.value || null;
+      if(!nome || qta < 0) return;
+      const arr = load(K_MAG); arr.push({id:uid(), nome, qta, scad}); save(K_MAG, arr);
+      magNome.value = ""; magQta.value = ""; magScad.value = ""; renderMagazzino();
     });
 
-    // Demo buttons
-    const seedDemo = document.getElementById("seedDemo");
-    const clearAll = document.getElementById("clearAll");
-    if (seedDemo) seedDemo.addEventListener("click", () => {
-      const t = todayStr();
-      save(K_TURNI, [{id:uid(),nome:"Rossi A.",data:t,orario:"08:00–14:00"},{id:uid(),nome:"Bianchi L.",data:t,orario:"14:00–20:00"}]);
-      save(K_MEZZI, [{id:uid(),nome:"Ambulanza 1"},{id:uid(),nome:"Ambulanza 3"},{id:uid(),nome:"Auto sanitaria"}]);
-      save(K_TRASPORTI, [{id:uid(),paziente:"Mario R.",ora:"10:30",data:t},{id:uid(),paziente:"Anna B.",ora:"12:15",data:t}]);
-      save(K_AVVISI, [{id:uid(),testo:"Controllo bombole O2"},{id:uid(),testo:"Guanti taglia M in esaurimento"}]);
-      renderTurniOggi(); renderMezzi(); renderTrasporti(); renderAvvisi();
-    });
-    if (clearAll) clearAll.addEventListener("click", () => {
-      ["turni","mezzi","trasporti","avvisi"].forEach(k => localStorage.removeItem(k));
-      renderTurniOggi(); renderMezzi(); renderTrasporti(); renderAvvisi();
-    });
+    // Deletes
+    trasportiList.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-deltr"); if(!id) return; save(K_TRASPORTI, load(K_TRASPORTI).filter(x=>(x.id||"")!==id)); renderTrasporti(); });
+    mezziDash.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-delm"); if(!id) return; save(K_MEZZI, load(K_MEZZI).filter(x=>(x.id||x)!==id)); renderMezzi(); });
+    avvisiList.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-delv"); if(!id) return; save(K_AVVISI, load(K_AVVISI).filter(x=>(x.id||x)!==id)); renderAvvisi(); });
+    if(magList) magList.addEventListener("click",(e)=>{ const id=e.target.getAttribute("data-delmag"); if(!id) return; save(K_MAG, load(K_MAG).filter(x=>x.id!==id)); renderMagazzino(); });
+
+    // Export CSV
+    if (exportTurni) exportTurni.addEventListener("click", () => download("turni.csv", toCSV(load(K_TURNI))));
+    if (exportTrasporti) exportTrasporti.addEventListener("click", () => download("trasporti.csv", toCSV(load(K_TRASPORTI))));
+    if (exportMag) exportMag.addEventListener("click", () => download("magazzino.csv", toCSV(load(K_MAG))));
 
     // Initial render
-    renderTurniOggi(); renderTrasporti(); renderMezzi(); renderAvvisi();
+    renderTurniOggi(); renderTrasporti(); renderMezzi(); renderAvvisi(); renderMagazzino();
   }
 
-  // PERSONALE
+  // PERSONALE page
   if (location.pathname.endsWith("personale.html")) setupPersonale();
 });
