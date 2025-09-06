@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestionale — Assistenza</title>
+  <title>Gestionale — Assistenza (SMART)</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (function(){ if(localStorage.getItem('staff_authed') !== '1'){ location.replace('login.html'); } })();
+  </script>
   <script defer src="js/store.js"></script>
-  <script defer src="js/app.js"></script>
+  <script defer src="js/smart.js"></script>
+  <script defer src="js/app_smart.js"></script>
 </head>
 <body>
   <header class="header">
@@ -14,10 +18,7 @@
       <a class="brand" href="./"><img src="assets/logo-cross.svg" alt=""><span>Assistenza Genova</span></a>
       <div class="nav-right">
         <button class="btn-outline btn" id="btnBackup">Backup JSON</button>
-        <label class="btn" style="cursor:pointer">
-          Ripristina JSON
-          <input id="restoreFile" type="file" accept="application/json" style="display:none">
-        </label>
+        <label class="btn" style="cursor:pointer">Ripristina JSON<input id="restoreFile" type="file" accept="application/json" style="display:none"></label>
         <button class="btn" id="btnLogout">Esci</button>
       </div>
     </div>
@@ -28,88 +29,42 @@
       <h2>Dashboard operativa</h2>
 
       <div class="tabs">
-        <button class="tab active" data-tab="mezzi">Mezzi</button>
-        <button class="tab" data-tab="prenotazioni">Prenotazioni</button>
+        <button class="tab active" data-tab="prenotazioni">Prenotazioni</button>
+        <button class="tab" data-tab="mezzi">Mezzi</button>
         <button class="tab" data-tab="pazienti">Pazienti</button>
         <button class="tab" data-tab="turni">Turni</button>
         <button class="tab" data-tab="impostazioni">Impostazioni</button>
       </div>
 
-      <!-- --- MEZZI --- -->
-      <section id="tab-mezzi" class="tabpage">
-        <div class="card">
-          <h3>Nuovo mezzo / Modifica</h3>
-          <form id="formMezzo">
-            <input type="hidden" id="mezzo_id">
-            <div class="form-row">
-              <div class="field"><label>ID</label><input id="mezzo_codice" class="input" placeholder="AMB-1" required></div>
-              <div class="field"><label>Tipo</label><input id="mezzo_tipo" class="input" placeholder="Ambulanza BLS" required></div>
-              <div class="field">
-                <label>Stato</label>
-                <select id="mezzo_stato" class="input">
-                  <option>Disponibile</option><option>In missione</option><option>Manutenzione</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-actions">
-              <button class="btn-outline btn" type="reset" id="mezzoAnnulla">Annulla</button>
-              <button class="btn" type="submit">Salva</button>
-            </div>
-          </form>
-        </div>
-        <div class="card">
-          <div class="tools">
-            <input id="filtroMezzo" class="input" placeholder="Cerca mezzo...">
-          </div>
-          <table class="table" id="tblMezzi">
-            <thead><tr><th>ID</th><th>Tipo</th><th>Stato</th><th>Azioni</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- --- PRENOTAZIONI --- -->
-      <section id="tab-prenotazioni" class="tabpage" hidden>
+      <!-- --- PRENOTAZIONI (prima tab) --- -->
+      <section id="tab-prenotazioni" class="tabpage">
         <div class="card">
           <h3>Nuova prenotazione</h3>
           <form id="formPren">
             <input type="hidden" id="pren_id">
             <div class="form-row">
-              <div class="field">
-                <label>Mezzo</label>
-                <select id="pren_mezzo" class="input" required></select>
-              </div>
-              <div class="field">
-                <label>Paziente</label>
-                <select id="pren_paziente" class="input"></select>
-              </div>
-              <div class="field">
-                <label>Data</label>
-                <input id="pren_data" type="date" class="input" required>
-              </div>
-              <div class="field">
-                <label>Ora inizio</label>
-                <input id="pren_ora" type="time" class="input" required>
-              </div>
-              <div class="field">
-                <label>Durata (ore)</label>
-                <input id="pren_durata" type="number" min="0.5" step="0.5" value="2" class="input">
-              </div>
+              <div class="field"><label>Mezzo</label><select id="pren_mezzo" class="input" required></select></div>
+              <div class="field"><label>Paziente</label><select id="pren_paziente" class="input"></select></div>
+              <div class="field"><label>Data</label><input id="pren_data" type="date" class="input" required></div>
+              <div class="field"><label>Ora inizio</label><input id="pren_ora" type="time" class="input" required></div>
+              <div class="field"><label>Durata (ore)</label><input id="pren_durata" type="number" min="0.5" step="0.5" value="2" class="input"></div>
             </div>
             <div class="form-row">
               <div class="field"><label>Da</label><input id="pren_da" class="input" placeholder="Indirizzo di partenza" required></div>
               <div class="field"><label>A</label><input id="pren_a" class="input" placeholder="Destinazione" required></div>
+              <div class="field"><label>Ausili</label><input id="pren_ausili" class="input" placeholder="Sedia, ossigeno, barella..."></div>
             </div>
             <div class="form-row">
-              <div class="field"><label>Ausili</label><input id="pren_ausili" class="input" placeholder="Sedia, ossigeno, barella..."></div>
               <div class="field"><label>Note</label><input id="pren_note" class="input" placeholder="Indicazioni aggiuntive"></div>
+              <div class="field"><label>Priorità</label><input id="pren_priorita" class="input" placeholder="calcolata" readonly></div>
             </div>
             <div class="form-actions">
-              <button class="btn-outline btn" type="reset" id="prenAnnulla">Annulla</button>
+              <button class="btn-outline btn" type="button" id="btnSuggerisciMezzo">Suggerisci mezzo</button>
+              <button class="btn-outline btn" type="button" id="btnSuggerisciOrario">Suggerisci orario</button>
               <button class="btn" type="submit">Salva prenotazione</button>
             </div>
+            <div id="smartHints" class="aside note"></div>
           </form>
-          <p class="note">Conflitti sullo stesso mezzo vengono segnalati automaticamente.</p>
         </div>
         <div class="card">
           <div class="tools">
@@ -118,11 +73,32 @@
             <input id="filtroPrenAl" type="date" class="input">
             <select id="filtroPrenMezzo" class="input"></select>
             <button id="btnCsvPren" class="btn-outline btn">Export CSV</button>
+            <button id="btnOttimizza" class="btn">Ottimizza giornata</button>
           </div>
           <table class="table" id="tblPren">
-            <thead><tr><th>Mezzo</th><th>Data / Orari</th><th>Paziente</th><th>Da</th><th>A</th><th>Ausili</th><th>Azioni</th></tr></thead>
+            <thead><tr><th>Priorità</th><th>Mezzo</th><th>Data / Orari</th><th>Paziente</th><th>Da</th><th>A</th><th>Ausili</th><th>Azioni</th></tr></thead>
             <tbody></tbody>
           </table>
+        </div>
+      </section>
+
+      <!-- --- MEZZI --- -->
+      <section id="tab-mezzi" class="tabpage" hidden>
+        <div class="card">
+          <h3>Nuovo mezzo / Modifica</h3>
+          <form id="formMezzo">
+            <input type="hidden" id="mezzo_id">
+            <div class="form-row">
+              <div class="field"><label>ID</label><input id="mezzo_codice" class="input" placeholder="AMB-1" required></div>
+              <div class="field"><label>Tipo</label><input id="mezzo_tipo" class="input" placeholder="Ambulanza BLS / ALS / Auto sanitaria" required></div>
+              <div class="field"><label>Stato</label><select id="mezzo_stato" class="input"><option>Disponibile</option><option>In missione</option><option>Manutenzione</option></select></div>
+            </div>
+            <div class="form-actions"><button class="btn-outline btn" type="reset" id="mezzoAnnulla">Annulla</button><button class="btn" type="submit">Salva</button></div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="tools"><input id="filtroMezzo" class="input" placeholder="Cerca mezzo..."></div>
+          <table class="table" id="tblMezzi"><thead><tr><th>ID</th><th>Tipo</th><th>Stato</th><th>Azioni</th></tr></thead><tbody></tbody></table>
         </div>
       </section>
 
@@ -139,27 +115,15 @@
             </div>
             <div class="form-row">
               <div class="field"><label>Piano</label><input id="paz_piano" class="input"></div>
-              <div class="field"><label>Ascensore</label>
-                <select id="paz_asc" class="input"><option value="">-</option><option>Sì</option><option>No</option></select>
-              </div>
-              <div class="field"><label>Ossigeno</label>
-                <select id="paz_o2" class="input"><option value="">-</option><option>Sì</option><option>No</option></select>
-              </div>
+              <div class="field"><label>Ascensore</label><select id="paz_asc" class="input"><option value="">-</option><option>Sì</option><option>No</option></select></div>
+              <div class="field"><label>Ossigeno</label><select id="paz_o2" class="input"><option value="">-</option><option>Sì</option><option>No</option></select></div>
             </div>
-            <div class="form-actions">
-              <button class="btn-outline btn" type="reset" id="pazAnnulla">Annulla</button>
-              <button class="btn" type="submit">Salva paziente</button>
-            </div>
+            <div class="form-actions"><button class="btn-outline btn" type="reset" id="pazAnnulla">Annulla</button><button class="btn" type="submit">Salva paziente</button></div>
           </form>
         </div>
         <div class="card">
-          <div class="tools">
-            <input id="filtroPaz" class="input" placeholder="Cerca paziente...">
-          </div>
-          <table class="table" id="tblPaz">
-            <thead><tr><th>Nome</th><th>Contatti</th><th>Dettagli</th><th>Azioni</th></tr></thead>
-            <tbody></tbody>
-          </table>
+          <div class="tools"><input id="filtroPaz" class="input" placeholder="Cerca paziente..."></div>
+          <table class="table" id="tblPaz"><thead><tr><th>Nome</th><th>Contatti</th><th>Dettagli</th><th>Azioni</th></tr></thead><tbody></tbody></table>
         </div>
       </section>
 
@@ -170,49 +134,40 @@
           <form id="formTurno">
             <input type="hidden" id="turno_id">
             <div class="form-row">
-              <div class="field"><label>Operatore</label><input id="turno_operatore" class="input" placeholder="Nome operatore" required></div>
+              <div class="field"><label>Operatore</label><input id="turno_operatore" class="input" required></div>
               <div class="field"><label>Mezzo (opz.)</label><select id="turno_mezzo" class="input"></select></div>
               <div class="field"><label>Data</label><input id="turno_data" type="date" class="input" required></div>
               <div class="field"><label>Ora inizio</label><input id="turno_ora_i" type="time" class="input" required></div>
               <div class="field"><label>Ora fine</label><input id="turno_ora_f" type="time" class="input" required></div>
             </div>
-            <div class="form-actions">
-              <button class="btn-outline btn" type="reset" id="turnoAnnulla">Annulla</button>
-              <button class="btn" type="submit">Salva turno</button>
-            </div>
+            <div class="form-actions"><button class="btn-outline btn" type="reset" id="turnoAnnulla">Annulla</button><button class="btn" type="submit">Salva turno</button></div>
           </form>
-          <p class="note">Conflitti: stesso operatore nello stesso orario viene segnalato.</p>
         </div>
         <div class="card">
-          <div class="tools">
-            <input id="filtroTurno" class="input" placeholder="Cerca operatore...">
-            <input id="filtroTurnoDal" type="date" class="input">
-            <input id="filtroTurnoAl" type="date" class="input">
-            <button id="btnCsvTurni" class="btn-outline btn">Export CSV</button>
-          </div>
-          <table class="table" id="tblTurni">
-            <thead><tr><th>Operatore</th><th>Data</th><th>Orari</th><th>Mezzo</th><th>Azioni</th></tr></thead>
-            <tbody></tbody>
-          </table>
+          <div class="tools"><input id="filtroTurno" class="input" placeholder="Cerca operatore..."><input id="filtroTurnoDal" type="date" class="input"><input id="filtroTurnoAl" type="date" class="input"><button id="btnCsvTurni" class="btn-outline btn">Export CSV</button></div>
+          <table class="table" id="tblTurni"><thead><tr><th>Operatore</th><th>Data</th><th>Orari</th><th>Mezzo</th><th>Azioni</th></tr></thead><tbody></tbody></table>
         </div>
       </section>
 
       <!-- --- IMPOSTAZIONI --- -->
       <section id="tab-impostazioni" class="tabpage" hidden>
         <div class="card">
-          <h3>Impostazioni</h3>
-          <div class="form-actions" style="justify-content:flex-start">
-            <button class="btn-outline btn" id="btnClear">Svuota dati (localStorage)</button>
+          <h3>Parametri intelligenti</h3>
+          <div class="form-row">
+            <div class="field"><label>Durata standard servizio (min)</label><input id="cfg_service" class="input" type="number" min="5" step="5" value="20"></div>
+            <div class="field"><label>Buffer traffico (min)</label><input id="cfg_buffer" class="input" type="number" min="0" step="5" value="15"></div>
+            <div class="field"><label>Durata default tratta (min)</label><input id="cfg_trip" class="input" type="number" min="5" step="5" value="30"></div>
           </div>
-          <p class="note">Suggerimento: <span class="kbd">Ctrl</span>+<span class="kbd">F</span> per cercare nella tabella, oppure usa i filtri dedicati sopra le tabelle.</p>
+          <p class="note">L’algoritmo impara dalle prenotazioni passate stimando i tempi medi tra zone “Da → A”. Questi valori servono solo come fallback.</p>
+          <div class="form-actions" style="justify-content:flex-start">
+            <button class="btn" id="btnSaveCfg">Salva impostazioni</button>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
-  <footer class="footer">
-    <div class="container">© 2025 Assistenza Genova — Gestionale</div>
-  </footer>
+  <footer class="footer"><div class="container">© 2025 Assistenza Genova — Gestionale SMART</div></footer>
 </body>
 </html>

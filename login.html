@@ -6,7 +6,7 @@
   <title>Area riservata — Login</title>
   <link rel="stylesheet" href="styles.css">
   <script>
-  const STAFF_PASSWORD = "assistenza2025"; // demo lato client
+  const STAFF_PASSWORD = "assistenza2025";
   function doLogin(e){
     e.preventDefault();
     const p = document.getElementById('password').value.trim();
@@ -30,7 +30,7 @@
     <div class="container">
       <div class="card" style="max-width:520px;margin:0 auto">
         <h2>Accesso area riservata</h2>
-        <p class="note">Demo statica: non adatta a dati sensibili.</p>
+        <p class="note">Demo lato client per Pages: non usare per dati sensibili.</p>
         <form onsubmit="doLogin(event)">
           <label for="password">Password</label>
           <input id="password" class="input" type="password" placeholder="Inserisci password" required>
