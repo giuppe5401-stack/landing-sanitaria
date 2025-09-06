@@ -19,6 +19,11 @@
   </header>
 
   <main class="container">
+    <section class="hero hero-center card" aria-labelledby="dash-hero-title">
+      <img src="img/logo.svg" alt="Logo Pubblica Assistenza" class="logo hero-logo" />
+      <h1 id="dash-hero-title" class="title mt-8">Area Riservata – Dashboard</h1>
+      <p class="subtitle">Gestione operativa di turni, mezzi, trasporti e comunicazioni – tutto in un unico pannello.</p>
+    </section>
     <section class="kpi-grid" aria-label="Indicatori principali">
       <div class="kpi-card"><div class="kpi-label">Trasporti oggi</div><div class="kpi-value" id="kpiTrasporti">0</div></div>
       <div class="kpi-card"><div class="kpi-label">Turni attivi</div><div class="kpi-value" id="kpiTurni">0</div></div>
@@ -96,6 +101,19 @@
       </div>
       <p class="muted small">Suggerimento: mantenere scorte minime e controllare le scadenze sotto i 30 giorni.</p>
     </section>
+  
+    <section class="card who-help" aria-labelledby="who-title">
+      <h2 id="who-title">Chi aiutiamo</h2>
+      <div class="who-grid">
+        <article class="who-card"><h3>Pazienti fragili</h3><p>Persone con mobilità ridotta che necessitano di assistenza per visite, terapie o dimissioni.</p></article>
+        <article class="who-card"><h3>Anziani</h3><p>Accompagnamento sicuro a controlli periodici e servizi sanitari, anche senza rete familiare.</p></article>
+        <article class="who-card"><h3>Persone con disabilità</h3><p>Supporto dedicato con ausili, valutazione accessibilità e pianificazione piani/ascensore.</p></article>
+        <article class="who-card"><h3>Strutture sanitarie</h3><p>Trasferimenti interstrutturali tra ospedali, cliniche e RSA con personale qualificato.</p></article>
+        <article class="who-card"><h3>Famiglie e caregiver</h3><p>Organizzazione dei trasporti e informazioni chiare per ridurre tempi e stress.</p></article>
+        <article class="who-card"><h3>Associazioni ed enti</h3><p>Coordinamento volontari e mezzi per eventi, screening e attività sul territorio.</p></article>
+      </div>
+    </section>
+
   </main>
 
   <script src="script.js" defer></script>

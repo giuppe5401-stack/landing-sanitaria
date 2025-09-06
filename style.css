@@ -56,3 +56,17 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(13,71,161,.15)
 @media (max-width:560px){ .grid-2col,.grid-3col{grid-template-columns:1fr} }
 .err{color:#b00020; font-size:.85rem; min-height:1.1em}
 input.is-invalid, select.is-invalid, textarea.is-invalid{ border-color:#b00020; box-shadow:0 0 0 3px rgba(176,0,32,.12); }
+
+
+/* ---- Dashboard hero with centered logo ---- */
+.hero-center{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+.hero-logo{ height:56px; width:auto; }
+.mt-8{ margin-top:12px; }
+
+/* ---- Chi aiutiamo ---- */
+.who-help h2{ margin-top:0; margin-bottom:10px; }
+.who-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.who-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px; box-shadow: var(--shadow); }
+.who-card h3{ margin:0 0 6px; font-size:18px; }
+@media (max-width:900px){ .who-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .who-grid{ grid-template-columns:1fr;} }
