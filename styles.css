@@ -1,64 +1,41 @@
-/* Stili del pulsante Pubblica Assistenza (variante 3: croce bianca su cerchio rosso) */
-:root{
-  --btn-bg: #004aad;      /* blu istituzionale */
-  --btn-bg-hover: #003580;
-  --btn-text: #ffffff;
-  --focus-ring: 0 0 0 4px rgba(0,74,173,0.2);
-}
-
-*{box-sizing:border-box}
-
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  background:#f7f7fb;
-  color:#111827;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:#fde6ef;
+  color:#0d2d7d;
 }
 
-.demo{
-  min-height:100svh;
-  display:grid;
-  place-items:center;
-  padding:24px;
+.servizi{
+  text-align:center;
+  margin:40px auto;
 }
 
-/* --- Bottone --- */
-.btn-assistenza{
-  background-color:var(--btn-bg);
-  color:var(--btn-text);
-  padding:14px 26px;
-  border:none;
-  border-radius:14px;
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:.5px;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
+.cards{
+  display:flex;
   justify-content:center;
-  gap:12px;
-  line-height:1;
-  transition:transform .15s ease, background-color .25s ease, box-shadow .2s ease;
-  box-shadow:0 6px 16px rgba(0,0,0,.12);
-  text-decoration:none;
+  gap:20px;
+  flex-wrap:wrap;
+  max-width:1200px;
+  margin:0 auto;
 }
 
-.btn-assistenza .icon{
-  width:24px;
-  height:24px;
-  display:block;
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  flex:1 1 300px;
+  max-width:350px;
 }
 
-.btn-assistenza:hover{ background-color:var(--btn-bg-hover); transform:translateY(-1px); }
-.btn-assistenza:active{ transform:translateY(0); }
-
-/* Accessibilità focus con tastiera */
-.btn-assistenza:focus-visible{
-  outline:none;
-  box-shadow: var(--focus-ring);
+.card h3{margin-top:0}
+.card button{
+  background:#004aad;
+  color:#fff;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
 }
-
-@media (max-width:480px){
-  .btn-assistenza{ font-size:16px; padding:12px 20px; }
-  .btn-assistenza .icon{ width:22px; height:22px; }
-}
+.card button:hover{background:#003580}

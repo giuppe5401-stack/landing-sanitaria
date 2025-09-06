@@ -1,15 +1,11 @@
-# Pulsante "Pubblica Assistenza" — Variante 3 (Croce bianca su cerchio rosso)
+# Sezione Servizi (centrata)
 
-Questo pacchetto contiene un esempio pronto all'uso del pulsante.
-## Come usare
-1. Carica la cartella sul tuo sito (o scompatta lo ZIP e copia i file nel progetto).
-2. Inserisci il markup del pulsante dove ti serve:
-```html
-<button class="btn-assistenza">
-  <img class="icon" src="assets/cross-red.svg" alt="" aria-hidden="true"/>
-  <span class="label">PUBBLICA ASSISTENZA</span>
-</button>
-```
-3. Assicurati di includere `styles.css` nella tua pagina.
+Questa demo mostra come centrare le 3 card "Servizi" nella pagina.
 
-Puoi cambiare il testo, linkare il bottone con un `<a>` (aggiungi `href`), o modificare i colori nelle variabili `:root` in `styles.css`.
+## File inclusi
+- index.html → esempio con le 3 card
+- styles.css → stili con flexbox per centrare
+
+## Uso
+Copia `styles.css` nel tuo progetto e collega il foglio di stile nella tua pagina.
+Le card restano sempre centrate e responsive.
