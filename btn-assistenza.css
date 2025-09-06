@@ -1,0 +1,19 @@
+/* Pulsante Pubblica Assistenza - solo asset, nessun override di homepage */
+.btn-assistenza{
+  --btn-bg:#004aad; --btn-bg-hover:#003580; --btn-text:#fff;
+  background:var(--btn-bg); color:var(--btn-text);
+  padding:14px 26px; border:none; border-radius:14px;
+  font:700 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  display:inline-flex; align-items:center; justify-content:center; gap:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+  transition:transform .15s ease, background-color .25s ease, box-shadow .2s ease;
+  cursor:pointer; text-decoration:none;
+}
+.btn-assistenza .icon{ width:24px; height:24px; display:block }
+.btn-assistenza:hover{ background:var(--btn-bg-hover); transform:translateY(-1px) }
+.btn-assistenza:active{ transform:translateY(0) }
+.btn-assistenza:focus-visible{ outline:none; box-shadow:0 0 0 4px rgba(0,74,173,.2) }
+@media (max-width:480px){
+  .btn-assistenza{ font-size:16px; padding:12px 20px }
+  .btn-assistenza .icon{ width:22px; height:22px }
+}
