@@ -1,41 +1,110 @@
+/* Stili base per Landing + Login + Area Riservata */
+:root{
+  --bg:#fde6ef;            /* rosa chiaro */
+  --card:#ffffff;
+  --text:#0d2d7d;          /* blu scuro */
+  --muted:#3857b3;
+  --primary:#004aad;       /* blu pulsanti */
+  --primary-900:#003580;
+  --ring: 0 0 0 4px rgba(0,74,173,.2);
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  background:#fde6ef;
-  color:#0d2d7d;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-.servizi{
-  text-align:center;
-  margin:40px auto;
+/* Header */
+.header{
+  position:sticky; top:0; z-index:10;
+  background:linear-gradient(#ffe9f4, #fde6ef);
+  border-bottom:1px solid rgba(0,0,0,.05);
+  backdrop-filter:saturate(1.1) blur(4px);
 }
+.container{max-width:1200px; margin:0 auto; padding:16px 20px;}
+.nav{display:flex; align-items:center; justify-content:space-between; gap:16px}
+.brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.3px; color:var(--text); text-decoration:none}
+.brand img{width:36px; height:36px}
+.nav-right{display:flex; align-items:center; gap:12px}
+a{color:var(--primary);}
 
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:12px 20px; border:none; border-radius:14px; cursor:pointer;
+  background:var(--primary); color:#fff; font-weight:700; text-decoration:none;
+  box-shadow:0 6px 16px rgba(0,0,0,.12); transition:transform .15s ease, background .25s ease, box-shadow .25s ease;
+}
+.btn:hover{ background:var(--primary-900); transform:translateY(-1px) }
+.btn:active{ transform:translateY(0) }
+.btn:focus-visible{ outline:none; box-shadow:var(--ring) }
+
+.btn-outline{ background:#fff; color:var(--primary); border:2px solid var(--primary) }
+.btn-outline:hover{ background:#f5f8ff; }
+
+/* Hero */
+.hero{ padding:56px 20px 24px; }
+.hero .wrap{
+  background:#ffe9f4; border-radius:var(--radius); box-shadow:0 10px 24px rgba(0,0,0,.08);
+  padding:32px 28px; text-align:center;
+}
+.hero h1{ font-size:clamp(28px, 4vw, 48px); margin:0 0 8px }
+.hero p{ margin:0 0 18px; color:#274189 }
+.hero .cta{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+.badge{
+  display:inline-flex; align-items:center; gap:10px; background:#0d47a1; color:#fff; 
+  padding:10px 14px; border-radius:999px; font-weight:700; margin:-36px auto 16px; width:max-content
+}
+.badge img{ width:20px; height:20px }
+
+/* Cards servizi */
+.section{ padding:28px 20px 50px }
+.section h2{ text-align:center; margin:0 0 18px }
 .cards{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
-  max-width:1200px;
-  margin:0 auto;
+  display:flex; justify-content:center; gap:20px; flex-wrap:wrap; max-width:1200px; margin:0 auto;
 }
-
 .card{
-  background:#fff;
-  padding:20px;
-  border-radius:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,.1);
-  flex:1 1 300px;
-  max-width:350px;
+  background:var(--card); border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,.1);
+  padding:20px; flex:1 1 300px; max-width:350px;
 }
+.card h3{ margin-top:0 }
+.card .actions{ margin-top:16px }
 
-.card h3{margin-top:0}
-.card button{
-  background:#004aad;
-  color:#fff;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
+/* Sezione contatti */
+.contact{
+  max-width:900px; margin:0 auto; background:#fff; border-radius:16px;
+  padding:20px; box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
-.card button:hover{background:#003580}
+.form-row{ display:flex; gap:12px; flex-wrap:wrap; }
+.input, textarea{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid #cfd8ff; font:inherit;
+}
+textarea{ min-height:110px; }
+label{ display:block; font-weight:600; margin-bottom:6px; color:#1b2e82 }
+.field{ flex:1 1 260px }
+
+/* Footer */
+.footer{ padding:28px 20px; text-align:center; color:#1f3fa4 }
+
+/* Login & Area riservata layouts */
+.centered{
+  min-height:calc(100dvh - 120px);
+  display:grid; place-items:center; padding:20px;
+}
+.card-lg{ background:#fff; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,.12); padding:24px; width:min(600px, 92vw) }
+.form-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:10px }
+.note{ font-size:.9rem; color:#455fb1 }
+
+.table{ width:100%; border-collapse:collapse; }
+.table th,.table td{ padding:10px 12px; border-bottom:1px solid #eef2ff; text-align:left }
+.table th{ background:#f5f7ff; }
+
+@media (max-width:600px){
+  .nav-right{ display:none }
+}

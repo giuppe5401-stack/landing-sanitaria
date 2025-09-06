@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area riservata — Gestione</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+  // Redirect se non autenticato (controllo client-side)
+  if(localStorage.getItem('staff_authed') !== '1'){
+    const next = encodeURIComponent(location.pathname.replace(/^\//,''));
+    location.replace('login.html?next=' + next);
+  }
+  function logout(){
+    localStorage.removeItem('staff_authed');
+    location.href = 'login.html';
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="./"><img src="assets/logo-cross.svg" alt=""><span>Assistenza Genova</span></a>
+      <div class="nav-right"><button class="btn" onclick="logout()">Esci</button></div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h2>Dashboard operativa</h2>
+      <p class="note">Esempio dimostrativo. Qui potrai inserire richieste, pianificare trasporti, gestire mezzi e note per i pazienti.</p>
+
+      <div class="card" style="margin:10px 0 20px;">
+        <h3>Nuova richiesta di trasporto</h3>
+        <div class="form-row">
+          <div class="field">
+            <label for="paziente">Paziente</label>
+            <input id="paziente" class="input" placeholder="Nome e Cognome">
+          </div>
+          <div class="field">
+            <label for="data">Data</label>
+            <input id="data" type="date" class="input">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="indirizzo">Indirizzo di partenza</label>
+            <input id="indirizzo" class="input" placeholder="Via, n°, piano, ascensore">
+          </div>
+          <div class="field">
+            <label for="destinazione">Destinazione</label>
+            <input id="destinazione" class="input" placeholder="Ospedale/clinica">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="ausili">Ausili</label>
+            <input id="ausili" class="input" placeholder="Sedia, ossigeno, barella...">
+          </div>
+          <div class="field">
+            <label for="note">Note</label>
+            <input id="note" class="input" placeholder="Indicazioni aggiuntive">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn">Salva richiesta</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Richieste recenti</h3>
+        <table class="table">
+          <thead><tr><th>Paziente</th><th>Data</th><th>Da</th><th>A</th><th>Ausili</th></tr></thead>
+          <tbody>
+            <tr><td>Mario Rossi</td><td>2025-09-09</td><td>Via Roma 10 (2°)</td><td>Galliera</td><td>Sedia</td></tr>
+            <tr><td>Lucia Bianchi</td><td>2025-09-10</td><td>Via XX Settembre</td><td>San Martino</td><td>Ossigeno</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

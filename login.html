@@ -1,25 +1,50 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login – Area Riservata</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area riservata — Login</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+  // Configurazione semplice: cambiare questa password per l'accesso.
+  // ATTENZIONE: è solo un gate lato client, NON usare per dati sensibili.
+  const STAFF_PASSWORD = "assistenza2025";
+  function doLogin(e){
+    e.preventDefault();
+    const p = document.getElementById('password').value.trim();
+    if(p === STAFF_PASSWORD){
+      localStorage.setItem('staff_authed','1');
+      const redir = new URLSearchParams(location.search).get('next') || 'staff.html';
+      location.href = redir;
+    }else{
+      const msg = document.getElementById('msg');
+      msg.textContent = "Password errata";
+      msg.style.color = '#c1121f';
+    }
+  }
+  </script>
 </head>
-<body class="bg">
-  <main class="container narrow">
-    <section class="card">
-      <h1>Accesso area riservata</h1>
-      <p class="muted">Demo: i dati restano nel browser.</p>
-      <form id="loginForm" class="form">
-        <label><span>Username</span><input type="text" name="username" required /></label>
-        <label><span>Password</span><input type="password" name="password" required /></label>
-        <button class="btn" type="submit">Accedi</button>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="./"><img src="assets/logo-cross.svg" alt=""><span>Assistenza Genova</span></a>
+    </div>
+  </header>
+
+  <main class="centered">
+    <div class="card-lg">
+      <h2>Accesso area riservata</h2>
+      <p class="note">Accesso riservato al personale. (Demo statica: controllo lato client)</p>
+      <form onsubmit="doLogin(event)">
+        <label for="password">Password</label>
+        <input id="password" class="input" type="password" placeholder="Inserisci password" required>
+        <div class="form-actions">
+          <a class="btn-outline btn" href="./">Annulla</a>
+          <button class="btn" type="submit">Entra</button>
+        </div>
+        <p id="msg" class="note"></p>
       </form>
-      <p class="muted small">Credenziali demo: <code>staff</code> / <code>secure123</code></p>
-      <p><a href="index.html">← Torna alla landing</a></p>
-    </section>
+    </div>
   </main>
-  <script src="script.js" defer></script>
 </body>
 </html>

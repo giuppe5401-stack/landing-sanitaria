@@ -3,29 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Servizi</title>
+  <title>Assistenza Sanitaria — Genova</title>
   <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Trasporti sanitari, supporto a pazienti e trasferimenti interstrutturali a Genova.">
 </head>
 <body>
-  <section class="servizi">
-    <h2>Servizi</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Trasporti sanitari programmati</h3>
-        <p>Accompagnamento per visite, terapie e dimissioni in tutta <b>Genova e provincia</b>.</p>
-        <button>Prenota</button>
-      </div>
-      <div class="card">
-        <h3>Supporto a pazienti fragili</h3>
-        <p>Per persone con <b>mobilità ridotta</b> o necessità particolari.</p>
-        <button>Richiedi assistenza</button>
-      </div>
-      <div class="card">
-        <h3>Trasferimenti interstrutturali</h3>
-        <p>Trasporto tra <b>ospedali, cliniche e RSA</b> con personale qualificato.</p>
-        <button>Organizza</button>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="./">
+        <img src="assets/logo-cross.svg" alt="Logo Croce">
+        <span>Assistenza Genova</span>
+      </a>
+      <div class="nav-right">
+        <a class="btn-outline btn" href="#servizi">Servizi</a>
+        <a class="btn" href="login.html">Area riservata</a>
       </div>
     </div>
-  </section>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="wrap">
+          <div class="badge"><img src="assets/logo-cross.svg" alt=""> Pubblica Assistenza</div>
+          <h1>Assistenza rapida e organizzata a Genova</h1>
+          <p>Trasporti sanitari, supporto ai pazienti e coordinamento mezzi — tutto in un'unica piattaforma.</p>
+          <div class="cta">
+            <a class="btn" href="#contatti">Richiedi assistenza</a>
+            <a class="btn-outline btn" href="#servizi">Scopri i servizi</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servizi" class="section">
+      <div class="container">
+        <h2>Servizi</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Trasporti sanitari programmati</h3>
+            <p>Accompagnamento per visite, terapie e dimissioni in tutta <b>Genova e provincia</b>.</p>
+            <ul>
+              <li>Ritiro a domicilio e assistenza alla mobilità</li>
+              <li>Gestione <b>piano, ascensore, ossigeno</b></li>
+              <li>Collegamento con ospedali e cliniche</li>
+            </ul>
+            <div class="actions"><a class="btn" href="#contatti">Prenota</a></div>
+          </div>
+          <div class="card">
+            <h3>Supporto a pazienti fragili</h3>
+            <p>Per persone con <b>mobilità ridotta</b> o necessità particolari, in sicurezza.</p>
+            <ul>
+              <li>Valutazione deambulazione</li>
+              <li>Abitazioni senza ascensore</li>
+              <li>Presidi e ausili su richiesta</li>
+            </ul>
+            <div class="actions"><a class="btn" href="#contatti">Richiedi assistenza</a></div>
+          </div>
+          <div class="card">
+            <h3>Trasferimenti interstrutturali</h3>
+            <p>Trasporto tra <b>ospedali, cliniche e RSA</b> con personale qualificato.</p>
+            <ul>
+              <li>Ambulanze per non autosufficienti</li>
+              <li>Assistenza durante il percorso</li>
+            </ul>
+            <div class="actions"><a class="btn" href="#contatti">Organizza</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contatti" class="section">
+      <div class="container">
+        <h2>Contatti</h2>
+        <div class="contact">
+          <form name="contact">
+            <div class="form-row">
+              <div class="field">
+                <label for="nome">Nome</label>
+                <input class="input" id="nome" name="nome" placeholder="Mario Rossi" required>
+              </div>
+              <div class="field">
+                <label for="telefono">Telefono</label>
+                <input class="input" id="telefono" name="telefono" placeholder="+39 ..." required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="comune">Comune</label>
+                <input class="input" id="comune" name="comune" placeholder="Genova">
+              </div>
+              <div class="field">
+                <label for="esigenze">Esigenze</label>
+                <input class="input" id="esigenze" name="esigenze" placeholder="sedia, ossigeno, piano, ascensore...">
+              </div>
+            </div>
+            <label for="messaggio">Messaggio</label>
+            <textarea id="messaggio" name="messaggio" placeholder="Descrivi la richiesta..."></textarea>
+            <div class="form-actions">
+              <button class="btn" type="submit">Invia</button>
+            </div>
+            <p class="note">Compilando il modulo verrai ricontattato entro poche ore.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 Assistenza Genova — Tutti i diritti riservati</div>
+  </footer>
 </body>
 </html>
