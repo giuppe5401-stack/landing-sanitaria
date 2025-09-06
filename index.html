@@ -1,29 +1,85 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assistenza Sanitaria — Genova</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="header">
-    <div class="container nav">
-      <a class="brand" href="./"><img src="assets/logo-cross.svg" alt="Logo Croce"><span>Assistenza Genova</span></a>
-      <div class="nav-right">
-        <a class="btn-outline btn" href="login.html">Area riservata</a>
-      </div>
-    </div>
-  </header>
-  <main class="section">
-    <div class="container">
-      <div class="card" style="text-align:center">
-        <h1>Assistenza rapida e organizzata a Genova</h1>
-        <p class="note">Trasporti sanitari, supporto a pazienti e coordinamento mezzi — tutto in un'unica piattaforma.</p>
-        <a class="btn" href="login.html">Entra nell'area riservata</a>
-      </div>
-    </div>
-  </main>
-  <footer class="footer"><div class="container">© 2025 Assistenza Genova</div></footer>
-</body>
-</html>
+import React, { useState } from "react";
+</div>
+<div className="flex items-center gap-4">
+<a href="#" className="hover:underline">Privacy</a>
+<a href="#" className="hover:underline">Cookie</a>
+<a href="#" className="hover:underline">Termini</a>
+</div>
+</div>
+</footer>
+
+
+{/* Area Operatori – Dialog di accesso */}
+<Dialog open={openLogin} onOpenChange={setOpenLogin}>
+<DialogContent className="sm:max-w-md rounded-2xl">
+<DialogHeader>
+<DialogTitle className="flex items-center gap-2">
+<Lock className="h-5 w-5"/> Area riservata operatori
+</DialogTitle>
+<DialogDescription>
+Inserisci le tue credenziali per accedere alla dashboard operativa.
+</DialogDescription>
+</DialogHeader>
+
+
+<Tabs defaultValue="login" className="w-full">
+<TabsList className="grid grid-cols-3">
+<TabsTrigger value="login">Login</TabsTrigger>
+<TabsTrigger value="recupero">Recupero</TabsTrigger>
+<TabsTrigger value="onboarding">Onboarding</TabsTrigger>
+</TabsList>
+
+
+<TabsContent value="login" className="mt-4">
+<form onSubmit={handleLogin} className="grid gap-3">
+<div>
+<Label htmlFor="email">Email istituzionale</Label>
+<Input id="email" name="email" type="email" placeholder="nome@ente.it" required />
+</div>
+<div>
+<Label htmlFor="password">Password</Label>
+<Input id="password" name="password" type="password" placeholder="••••••••" required />
+</div>
+<div>
+<Label htmlFor="otp">Codice 2FA (se richiesto)</Label>
+<Input id="otp" name="otp" placeholder="123 456" />
+</div>
+{err && (
+<div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2">{err}</div>
+)}
+<DialogFooter>
+<Button type="submit" className="rounded-xl" disabled={loading}>
+{loading ? "Accesso in corso…" : "Accedi"}
+</Button>
+</DialogFooter>
+</form>
+</TabsContent>
+
+
+<TabsContent value="recupero" className="mt-4">
+<p className="text-sm text-blue-800/80 mb-3">
+Inserisci la tua email per ricevere il link di reimpostazione password.
+</p>
+<div className="grid gap-3">
+<div>
+<Label>Email</Label>
+<Input type="email" placeholder="nome@ente.it" />
+</div>
+<Button className="rounded-xl">Invia link</Button>
+</div>
+</TabsContent>
+
+
+<TabsContent value="onboarding" className="mt-4 text-sm text-blue-800/80">
+<ul className="list-disc pl-5 space-y-2">
+<li>Per nuovi operatori: chiedi l'attivazione dell'account al referente.</li>
+<li>Autenticazione: email istituzionale + password, opzionale 2FA.</li>
+<li>Permessi a ruoli: amministrazione, coordinamento, equipaggio.</li>
+</ul>
+</TabsContent>
+</Tabs>
+</DialogContent>
+</Dialog>
+</div>
+);
+}
