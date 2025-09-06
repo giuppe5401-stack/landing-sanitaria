@@ -1,47 +1,281 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Area riservata — Login</title>
-  <link rel="stylesheet" href="styles.css">
-  <script>
-  const STAFF_PASSWORD = "assistenza2025";
-  function doLogin(e){
-    e.preventDefault();
-    const p = document.getElementById('password').value.trim();
-    if(p === STAFF_PASSWORD){
-      localStorage.setItem('staff_authed','1');
-      location.href = 'staff.html';
-    }else{
-      const msg = document.getElementById('msg'); msg.textContent = "Password errata"; msg.style.color = '#c1121f';
-    }
-  }
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Area Riservata – Pubblica Assistenza</title>
+  <meta name="description" content="Login area riservata per operatori: gestione mezzi, prenotazioni, turni e note operative." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg:#fdeaf0; --card:#fff; --brand:#1f5eff; --ink:#0d1b3f; --muted:#4d5a7a; --shadow:0 10px 24px rgba(13,27,63,.08); --radius:18px; }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink); background:linear-gradient(180deg,var(--bg),#fff 120%)}
+    .container{max-width:1100px; margin:0 auto; padding:0 18px}
+    header{position:sticky; top:0; background:rgba(253,234,240,.75); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid rgba(31,94,255,.08); z-index:20}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; gap:12px; align-items:center; text-decoration:none}
+    .logo{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--brand); box-shadow:var(--shadow)}
+    .logo svg{width:22px; height:22px; color:#fff}
+    .brand-title{font-weight:800; color:var(--brand)}
+    .cta{display:inline-flex; align-items:center; background:var(--brand); color:#fff; padding:10px 14px; border-radius:999px; text-decoration:none; font-weight:700; box-shadow:var(--shadow)}
+    .cta.secondary{background:#fff; color:var(--brand); border:2px solid var(--brand)}
+    main{padding:40px 0}
+    .card{background:#fff; border:1px solid rgba(13,27,63,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .col-4{grid-column:span 12} .col-8{grid-column:span 12}
+    @media(min-width:920px){.col-4{grid-column:span 4}.col-8{grid-column:span 8}}
+    .login{max-width:520px; margin:22px auto}
+    label{font-weight:600}
+    .field{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+    input{padding:12px 14px; border-radius:12px; border:1px solid #cfd7ff; font:inherit}
+    .muted{color:var(--muted)}
+    #app{display:none}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap}
+    .tab{padding:10px 14px; border-radius:999px; background:#eef2ff; color:var(--brand); border:1px solid rgba(31,94,255,.2); cursor:pointer; font-weight:700}
+    .tab.active{background:var(--brand); color:#fff}
+    .pane{display:none}
+    .pane.active{display:block}
+    table{width:100%; border-collapse:separate; border-spacing:0 8px}
+    th,td{text-align:left; padding:10px 12px}
+    tbody tr{background:#fff; box-shadow:var(--shadow)}
+    tbody tr td:first-child{border-top-left-radius:12px; border-bottom-left-radius:12px}
+    tbody tr td:last-child{border-top-right-radius:12px; border-bottom-right-radius:12px}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .row .field{flex:1}
+    .right{display:flex; gap:8px; justify-content:flex-end}
+  </style>
 </head>
 <body>
-  <header class="header">
+  <header>
     <div class="container nav">
-      <a class="brand" href="./"><img src="assets/logo-cross.svg" alt=""><span>Assistenza Genova</span></a>
+      <a class="brand" href="index.html">
+        <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6V4z" fill="currentColor"/></svg></span>
+        <span class="brand-title">PUBBLICA ASSISTENZA</span>
+      </a>
+      <a class="cta secondary" href="index.html">Torna al sito</a>
     </div>
   </header>
 
-  <main class="section">
+  <main>
     <div class="container">
-      <div class="card" style="max-width:520px;margin:0 auto">
-        <h2>Accesso area riservata</h2>
-        <p class="note">Demo lato client per Pages: non usare per dati sensibili.</p>
-        <form onsubmit="doLogin(event)">
-          <label for="password">Password</label>
-          <input id="password" class="input" type="password" placeholder="Inserisci password" required>
-          <div class="form-actions">
-            <a class="btn-outline btn" href="./">Annulla</a>
-            <button class="btn" type="submit">Entra</button>
+      <section id="login-panel" class="card login" aria-label="Accesso operatori">
+        <h1 style="margin:0 0 6px">Area riservata</h1>
+        <p class="muted">Accesso per personale e volontari. Inserisci le credenziali fornite dall'organizzazione.</p>
+        <form id="login-form" onsubmit="login(event)">
+          <div class="field">
+            <label for="user">Utente</label>
+            <input id="user" name="user" required autocomplete="username" />
           </div>
-          <p id="msg" class="note"></p>
+          <div class="field">
+            <label for="pass">Password</label>
+            <input id="pass" name="pass" type="password" required autocomplete="current-password" />
+          </div>
+          <div class="row" style="align-items:center; justify-content:space-between">
+            <small class="muted">Demo: <code>operatore</code> / <code>accesso2025</code></small>
+            <button class="cta" type="submit">Entra</button>
+          </div>
         </form>
-      </div>
+      </section>
+
+      <section id="app">
+        <div class="grid">
+          <div class="col-4">
+            <div class="card">
+              <h2 style="margin-top:0">Pannello</h2>
+              <p id="who" class="muted">Autenticato come …</p>
+              <div class="tabs" role="tablist">
+                <button class="tab active" data-tab="mezzi" role="tab">Mezzi</button>
+                <button class="tab" data-tab="prenotazioni" role="tab">Prenotazioni</button>
+                <button class="tab" data-tab="turni" role="tab">Turni</button>
+                <button class="tab" data-tab="note" role="tab">Note operative</button>
+              </div>
+              <div class="right" style="margin-top:14px">
+                <button class="cta secondary" onclick="logout()">Esci</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-8">
+            <div class="card pane active" id="pane-mezzi" role="region" aria-labelledby="tab-mezzi">
+              <h3 style="margin-top:0">Parco mezzi</h3>
+              <table>
+                <thead><tr><th>Targa</th><th>Tipo</th><th>Stato</th><th>Note</th></tr></thead>
+                <tbody id="mezzi-body"></tbody>
+              </table>
+              <details style="margin-top:12px"><summary><b>Aggiungi mezzo</b></summary>
+                <div class="row">
+                  <div class="field"><label>Targa</label><input id="m-targa"></div>
+                  <div class="field"><label>Tipo</label><input id="m-tipo" placeholder="Auto / Ambulanza"></div>
+                  <div class="field"><label>Stato</label><input id="m-stato" placeholder="Disponibile / In servizio"></div>
+                </div>
+                <div class="field"><label>Note</label><input id="m-note"></div>
+                <div class="right"><button class="cta" onclick="addMezzo()" type="button">Salva</button></div>
+              </details>
+            </div>
+
+            <div class="card pane" id="pane-prenotazioni" role="region">
+              <h3 style="margin-top:0">Prenotazioni</h3>
+              <table>
+                <thead><tr><th>Data</th><th>Paziente</th><th>Da → A</th><th>Presidi</th><th>Stato</th></tr></thead>
+                <tbody id="book-body"></tbody>
+              </table>
+              <details style="margin-top:12px"><summary><b>Nuova prenotazione</b></summary>
+                <div class="row">
+                  <div class="field"><label>Data</label><input type="date" id="b-data"></div>
+                  <div class="field"><label>Paziente</label><input id="b-paz"></div>
+                  <div class="field"><label>Da</label><input id="b-da" placeholder="indirizzo/piano"></div>
+                  <div class="field"><label>A</label><input id="b-a" placeholder="ospedale/reparto"></div>
+                </div>
+                <div class="row">
+                  <div class="field"><label>Presidi</label><input id="b-presidi" placeholder="carrozzina, ossigeno…"></div>
+                  <div class="field"><label>Stato</label><input id="b-stato" placeholder="In attesa / Confermato"></div>
+                </div>
+                <div class="right"><button class="cta" onclick="addBooking()" type="button">Aggiungi</button></div>
+              </details>
+            </div>
+
+            <div class="card pane" id="pane-turni" role="region">
+              <h3 style="margin-top:0">Turni</h3>
+              <table>
+                <thead><tr><th>Data</th><th>Orario</th><th>Equipaggio</th><th>Mezzo</th></tr></thead>
+                <tbody id="shift-body"></tbody>
+              </table>
+              <details style="margin-top:12px"><summary><b>Aggiungi turno</b></summary>
+                <div class="row">
+                  <div class="field"><label>Data</label><input type="date" id="t-data"></div>
+                  <div class="field"><label>Orario</label><input id="t-orario" placeholder="08:00–12:00"></div>
+                  <div class="field"><label>Equipaggio</label><input id="t-eq" placeholder="2 soccorritori"></div>
+                  <div class="field"><label>Mezzo</label><input id="t-mezzo" placeholder="AB123CD"></div>
+                </div>
+                <div class="right"><button class="cta" onclick="addShift()" type="button">Salva</button></div>
+              </details>
+            </div>
+
+            <div class="card pane" id="pane-note" role="region">
+              <h3 style="margin-top:0">Note operative</h3>
+              <div class="field"><label>Annotazioni di servizio</label><textarea id="note" style="min-height:160px; width:100%; padding:12px 14px; border-radius:12px; border:1px solid #cfd7ff"></textarea></div>
+              <div class="right"><button class="cta" onclick="saveNote()" type="button">Salva note</button></div>
+              <p class="muted">Le informazioni inserite restano sul tuo dispositivo (Local Storage). Per un'area riservata reale servirà un backend sicuro.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
+
+  <script>
+    // --- Demo credentials (da sostituire con backend reale) ---
+    const DEMO_USER = 'operatore';
+    const DEMO_PASS = 'accesso2025';
+
+    const qs = sel => document.querySelector(sel);
+    const qsa = sel => [...document.querySelectorAll(sel)];
+
+    function login(e){
+      e.preventDefault();
+      const u = qs('#user').value.trim();
+      const p = qs('#pass').value;
+      if(u===DEMO_USER && p===DEMO_PASS){
+        localStorage.setItem('pa_logged','1');
+        localStorage.setItem('pa_user',u);
+        showApp();
+      } else {
+        alert('Credenziali non valide');
+      }
+    }
+    function logout(){
+      localStorage.removeItem('pa_logged');
+      showLogin();
+    }
+    function showApp(){
+      qs('#login-panel').style.display='none';
+      qs('#app').style.display='block';
+      qs('#who').textContent = 'Autenticato come ' + (localStorage.getItem('pa_user')||'operatore');
+      initTables();
+    }
+    function showLogin(){
+      qs('#app').style.display='none';
+      qs('#login-panel').style.display='block';
+    }
+
+    // Tabs
+    document.addEventListener('click', (e) => {
+      if(e.target.classList.contains('tab')){
+        document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+        e.target.classList.add('active');
+        document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+        document.getElementById('pane-'+e.target.dataset.tab).classList.add('active');
+      }
+    });
+
+    // Sample data in LocalStorage
+    const mezziKey='pa_mezzi', bookKey='pa_book', shiftKey='pa_shift', noteKey='pa_note';
+    function initTables(){
+      // Mezzi
+      const mz = JSON.parse(localStorage.getItem(mezziKey) || '[{"targa":"AB123CD","tipo":"Ambulanza","stato":"Disponibile","note":"O2 pieno"}]');
+      renderMezzi(mz);
+      // Bookings
+      const bk = JSON.parse(localStorage.getItem(bookKey) || '[]');
+      renderBookings(bk);
+      // Shifts
+      const sh = JSON.parse(localStorage.getItem(shiftKey) || '[]');
+      renderShifts(sh);
+      // Notes
+      qs('#note').value = localStorage.getItem(noteKey)||'';
+    }
+    function renderMezzi(arr){
+      const body = qs('#mezzi-body'); body.innerHTML='';
+      arr.forEach((m)=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML = `<td>${m.targa}</td><td>${m.tipo}</td><td>${m.stato}</td><td>${m.note||''}</td>`;
+        body.appendChild(tr);
+      });
+      localStorage.setItem(mezziKey, JSON.stringify(arr));
+    }
+    function addMezzo(){
+      const arr = JSON.parse(localStorage.getItem(mezziKey)||'[]');
+      arr.push({targa:qs('#m-targa').value,tipo:qs('#m-tipo').value,stato:qs('#m-stato').value,note:qs('#m-note').value});
+      renderMezzi(arr);
+      ['#m-targa','#m-tipo','#m-stato','#m-note'].forEach(s=>qs(s).value='');
+    }
+    function renderBookings(arr){
+      const body = qs('#book-body'); body.innerHTML='';
+      arr.forEach(b=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML = `<td>${b.data||''}</td><td>${b.paz||''}</td><td>${b.da||''} → ${b.a||''}</td><td>${b.presidi||''}</td><td>${b.stato||''}</td>`;
+        body.appendChild(tr);
+      });
+      localStorage.setItem(bookKey, JSON.stringify(arr));
+    }
+    function addBooking(){
+      const arr = JSON.parse(localStorage.getItem(bookKey)||'[]');
+      arr.push({data:qs('#b-data').value,paz:qs('#b-paz').value,da:qs('#b-da').value,a:qs('#b-a').value,presidi:qs('#b-presidi').value,stato:qs('#b-stato').value});
+      renderBookings(arr);
+      ['#b-data','#b-paz','#b-da','#b-a','#b-presidi','#b-stato'].forEach(s=>qs(s).value='');
+    }
+    function renderShifts(arr){
+      const body = qs('#shift-body'); body.innerHTML='';
+      arr.forEach(t=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML = `<td>${t.data||''}</td><td>${t.orario||''}</td><td>${t.eq||''}</td><td>${t.mezzo||''}</td>`;
+        body.appendChild(tr);
+      });
+      localStorage.setItem(shiftKey, JSON.stringify(arr));
+    }
+    function addShift(){
+      const arr = JSON.parse(localStorage.getItem(shiftKey)||'[]');
+      arr.push({data:qs('#t-data').value,orario:qs('#t-orario').value,eq:qs('#t-eq').value,mezzo:qs('#t-mezzo').value});
+      renderShifts(arr);
+      ['#t-data','#t-orario','#t-eq','#t-mezzo'].forEach(s=>qs(s).value='');
+    }
+    function saveNote(){
+      localStorage.setItem(noteKey, qs('#note').value);
+      alert('Note salvate sul dispositivo');
+    }
+
+    if(localStorage.getItem('pa_logged')==='1'){ showApp(); }
+  </script>
 </body>
 </html>

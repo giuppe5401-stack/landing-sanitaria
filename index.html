@@ -1,81 +1,291 @@
 <!DOCTYPE html>
-btn.addEventListener('click',()=>{
-qsa('.tab').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-qsa('.pane').forEach(p=>p.classList.remove('active'));
-qs('#pane-'+btn.dataset.tab).classList.add('active');
-})
-})
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pubblica Assistenza – Trasporti Sanitari e Supporto a Genova</title>
+  <meta name="description" content="Assistenza rapida e organizzata a Genova: trasporti sanitari programmati, supporto a pazienti fragili e trasferimenti interstrutturali. Chiama o richiedi assistenza online." />
+  <meta name="theme-color" content="#f7d9e3" />
+  <meta property="og:title" content="Pubblica Assistenza – Genova" />
+  <meta property="og:description" content="Trasporti sanitari, supporto a pazienti e coordinamento mezzi – tutto in un'unica piattaforma." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fdeaf0;          /* rosa tenue */
+      --card:#fff;           /* bianco carte */
+      --brand:#1f5eff;       /* blu brand */
+      --ink:#0d1b3f;         /* blu scuro per testi */
+      --muted:#4d5a7a;       /* testo secondario */
+      --shadow:0 10px 24px rgba(13,27,63,.08);
+      --radius:18px;
+    }
+    html,body{height:100%}
+    body{font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; color:var(--ink); background:linear-gradient(180deg,var(--bg),#fff 120%);}    
+    .container{max-width:1140px; margin:0 auto; padding:0 18px}
+    .skip-link{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden}
+    .skip-link:focus{left:16px; top:16px; width:auto; height:auto; background:#fff; padding:8px 12px; border-radius:8px; box-shadow:var(--shadow)}
+    /* Header */
+    header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(8px); background:rgba(253,234,240,.7); border-bottom:1px solid rgba(31,94,255,.08)}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none}
+    .logo{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--brand); box-shadow:var(--shadow)}
+    .logo svg{width:22px; height:22px; color:white}
+    .brand-title{font-weight:800; letter-spacing:.2px; color:var(--brand)}
+    nav ul{list-style:none; display:flex; gap:18px; margin:0; padding:0}
+    nav a{color:var(--ink); text-decoration:none; font-weight:600}
+    nav a:hover{color:var(--brand)}
+    .cta{display:inline-flex; align-items:center; gap:10px; background:var(--brand); color:#fff; text-decoration:none; padding:12px 16px; border-radius:999px; font-weight:700; box-shadow:var(--shadow)}
+    .cta.secondary{background:#fff; color:var(--brand); border:2px solid var(--brand)}
+    .cta:focus-visible{outline:3px solid #99b3ff; outline-offset:2px}
+    /* Hero */
+    .hero{padding:56px 0 28px}
+    .badge{display:inline-block; background:#1039b3; color:#fff; padding:8px 12px; border-radius:999px; font-weight:700; letter-spacing:.3px; font-size:.9rem}
+    .hero h1{font-size:clamp(2rem,4.4vw,3.2rem); line-height:1.1; margin:16px 0 10px}
+    .hero p{max-width:760px; color:var(--muted); font-size:1.05rem}
+    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px}
+    .hero-card{background:rgba(255,255,255,.8); border:1px solid rgba(31,94,255,.08); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); margin-top:24px}
+    /* Sections */
+    section{padding:48px 0}
+    .section-title{font-size:1.9rem; margin:0 0 16px}
+    .cards{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .card{grid-column:span 12; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; border:1px solid rgba(13,27,63,.06)}
+    @media(min-width:760px){.card{grid-column:span 6}}
+    @media(min-width:1024px){.card{grid-column:span 4}}
+    .card h3{margin:0 0 8px; font-size:1.2rem; color:var(--brand)}
+    .card p{margin:0 0 10px; color:var(--muted)}
+    .card ul{margin:12px 0 16px; padding-left:20px}
+    .card li{margin:6px 0}
+    .chip{display:inline-block; padding:6px 10px; border-radius:999px; background:#eef2ff; color:var(--brand); font-weight:700; font-size:.9rem}
+    /* Steps */
+    .steps{display:grid; grid-template-columns:repeat(12,1fr); gap:16px}
+    .step{grid-column:span 12; background:linear-gradient(#fff,#f9fbff); border:1px dashed rgba(31,94,255,.25); border-radius:16px; padding:18px}
+    @media(min-width:900px){.step{grid-column:span 4}}
+    .step b{color:var(--brand)}
+    /* FAQ */
+    details{background:#fff; border-radius:14px; border:1px solid rgba(13,27,63,.08); padding:14px 18px; box-shadow:var(--shadow)}
+    details+details{margin-top:12px}
+    summary{cursor:pointer; font-weight:700}
+    /* Contact */
+    .contact{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .contact .info{grid-column:span 12}
+    .contact form{grid-column:span 12; background:#fff; padding:22px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(13,27,63,.06)}
+    @media(min-width:900px){.contact .info{grid-column:span 5} .contact form{grid-column:span 7}}
+    label{font-weight:600; font-size:.95rem}
+    .field{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+    input, select, textarea{padding:12px 14px; border-radius:12px; border:1px solid #cfd7ff; font:inherit}
+    textarea{min-height:120px}
+    .agree{display:flex; gap:10px; align-items:flex-start}
+    .muted{color:var(--muted)}
+    /* Footer */
+    footer{padding:28px 0; color:#5f6c8a}
+    footer a{color:inherit}
+    /* Sticky mobile bar */
+    .stickybar{position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:1px solid rgba(13,27,63,.08); padding:10px 14px; display:flex; gap:10px}
+    .stickybar .cta{flex:1; justify-content:center}
+    @media(min-width:860px){.stickybar{display:none}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalTransport",
+    "name": "Pubblica Assistenza – Genova",
+    "areaServed": "Genova e provincia",
+    "availableService": [
+      "Trasporti sanitari programmati",
+      "Supporto a pazienti fragili",
+      "Trasferimenti interstrutturali"
+    ],
+    "url": "https://example.it/",
+    "telephone": "+39 000 000 0000"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#contenuto">Salta al contenuto</a>
+  <!-- Header -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Principale">
+      <a class="brand" href="#" aria-label="Homepage Pubblica Assistenza">
+        <span class="logo" aria-hidden="true">
+          <!-- Cross icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6V4z" fill="currentColor"/></svg>
+        </span>
+        <span class="brand-title">PUBBLICA ASSISTENZA</span>
+      </a>
+      <nav aria-label="Sezioni">
+        <ul>
+          <li><a href="#servizi">Servizi</a></li>
+          <li><a href="#come-funziona">Come funziona</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contatti">Contatti</a></li>
+          <li><a class="cta secondary" href="login.html">Area riservata</a></li>
+        </ul>
+      </nav>
+      <a class="cta" href="#contatti" aria-label="Contattaci ora">Contattaci</a>
+    </div>
+  </header>
 
+  <main id="contenuto">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <span class="badge">PUBBLICA ASSISTENZA</span>
+        <h1>Assistenza rapida e organizzata a Genova</h1>
+        <p>Trasporti sanitari, supporto ai pazienti e coordinamento mezzi — tutto in un'unica piattaforma. Prenota un trasporto, richiedi un accompagnamento o organizza un trasferimento interstrutturale con personale qualificato.</p>
+        <div class="hero-cta">
+          <a class="cta" href="#contatti">Richiedi assistenza</a>
+          <a class="cta secondary" href="#servizi">Vedi i servizi</a>
+        </div>
+        <div class="hero-card" role="note">
+          <strong>Copertura:</strong> <span class="chip">Genova e provincia</span> · <strong>Orari:</strong> 7:00–20:00 (emergenze su richiesta)
+        </div>
+      </div>
+    </section>
 
-// Sample data in LocalStorage
-const mezziKey='pa_mezzi', bookKey='pa_book', shiftKey='pa_shift', noteKey='pa_note';
-function initTables(){
-// Mezzi
-const mz = JSON.parse(localStorage.getItem(mezziKey) || '[{"targa":"AB123CD","tipo":"Ambulanza","stato":"Disponibile","note":"O2 pieno"}]');
-renderMezzi(mz);
-// Bookings
-const bk = JSON.parse(localStorage.getItem(bookKey) || '[]');
-renderBookings(bk);
-// Shifts
-const sh = JSON.parse(localStorage.getItem(shiftKey) || '[]');
-renderShifts(sh);
-// Notes
-qs('#note').value = localStorage.getItem(noteKey)||'';
-}
-function renderMezzi(arr){
-const body = qs('#mezzi-body'); body.innerHTML='';
-arr.forEach((m,i)=>{
-const tr=document.createElement('tr');
-tr.innerHTML = `<td>${m.targa}</td><td>${m.tipo}</td><td>${m.stato}</td><td>${m.note||''}</td>`;
-body.appendChild(tr);
-});
-localStorage.setItem(mezziKey, JSON.stringify(arr));
-}
-function addMezzo(){
-const arr = JSON.parse(localStorage.getItem(mezziKey)||'[]');
-arr.push({targa:qs('#m-targa').value,tipo:qs('#m-tipo').value,stato:qs('#m-stato').value,note:qs('#m-note').value});
-renderMezzi(arr);
-['#m-targa','#m-tipo','#m-stato','#m-note'].forEach(s=>qs(s).value='');
-}
-function renderBookings(arr){
-const body = qs('#book-body'); body.innerHTML='';
-arr.forEach(b=>{
-const tr=document.createElement('tr');
-tr.innerHTML = `<td>${b.data||''}</td><td>${b.paz||''}</td><td>${b.da||''} → ${b.a||''}</td><td>${b.presidi||''}</td><td>${b.stato||''}</td>`;
-body.appendChild(tr);
-});
-localStorage.setItem(bookKey, JSON.stringify(arr));
-}
-function addBooking(){
-const arr = JSON.parse(localStorage.getItem(bookKey)||'[]');
-arr.push({data:qs('#b-data').value,paz:qs('#b-paz').value,da:qs('#b-da').value,a:qs('#b-a').value,presidi:qs('#b-presidi').value,stato:qs('#b-stato').value});
-renderBookings(arr);
-['#b-data','#b-paz','#b-da','#b-a','#b-presidi','#b-stato'].forEach(s=>qs(s).value='');
-}
-function renderShifts(arr){
-const body = qs('#shift-body'); body.innerHTML='';
-arr.forEach(t=>{
-const tr=document.createElement('tr');
-tr.innerHTML = `<td>${t.data||''}</td><td>${t.orario||''}</td><td>${t.eq||''}</td><td>${t.mezzo||''}</td>`;
-body.appendChild(tr);
-});
-localStorage.setItem(shiftKey, JSON.stringify(arr));
-}
-function addShift(){
-const arr = JSON.parse(localStorage.getItem(shiftKey)||'[]');
-arr.push({data:qs('#t-data').value,orario:qs('#t-orario').value,eq:qs('#t-eq').value,mezzo:qs('#t-mezzo').value});
-renderShifts(arr);
-['#t-data','#t-orario','#t-eq','#t-mezzo'].forEach(s=>qs(s).value='');
-}
-function saveNote(){
-localStorage.setItem(noteKey, qs('#note').value);
-alert('Note salvate sul dispositivo');
-}
+    <!-- Servizi -->
+    <section id="servizi">
+      <div class="container">
+        <h2 class="section-title">Servizi</h2>
+        <div class="cards">
+          <article class="card" aria-labelledby="s1">
+            <h3 id="s1">Trasporti sanitari programmati</h3>
+            <p>Accompagnamento per visite, terapie e dimissioni in tutta <b>Genova e provincia</b>.</p>
+            <ul>
+              <li>Ritiro a domicilio e assistenza alla mobilità</li>
+              <li>Gestione <b>piano, ascensore</b>, <b>ossigeno</b></li>
+              <li>Collegamento con ospedali e cliniche</li>
+            </ul>
+            <a class="cta" href="#contatti">Prenota</a>
+          </article>
 
+          <article class="card" aria-labelledby="s2">
+            <h3 id="s2">Supporto a pazienti fragili</h3>
+            <p>Per persone con <b>mobilità ridotta</b> o necessità particolari, in sicurezza.</p>
+            <ul>
+              <li>Valutazione deambulazione e ausili</li>
+              <li>Abitazioni senza ascensore: gestione in sicurezza</li>
+              <li>Presidi e ausili su richiesta</li>
+            </ul>
+            <a class="cta" href="#contatti">Richiedi assistenza</a>
+          </article>
 
-// Persist session demo
-if(localStorage.getItem('pa_logged')==='1'){ showApp(); }
-</script>
+          <article class="card" aria-labelledby="s3">
+            <h3 id="s3">Trasferimenti interstrutturali</h3>
+            <p>Trasporto tra <b>ospedali</b>, <b>cliniche</b> e <b>RSA</b> con personale qualificato.</p>
+            <ul>
+              <li>Ambulanze per non autosufficienti</li>
+              <li>Assistenza durante tutto il percorso</li>
+              <li>Coordinamento con le strutture</li>
+            </ul>
+            <a class="cta" href="#contatti">Organizza</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Come funziona -->
+    <section id="come-funziona">
+      <div class="container">
+        <h2 class="section-title">Come funziona</h2>
+        <div class="steps">
+          <div class="step"><b>1. Contatto</b><br/>Compila il modulo o chiamaci indicando data, orari e necessità.</div>
+          <div class="step"><b>2. Valutazione</b><br/>Verifichiamo percorso, piano/ascensore, presidi e tempi migliori.</div>
+          <div class="step"><b>3. Conferma</b><br/>Ricevi conferma con dettagli del mezzo, equipaggio e costi.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <h2 class="section-title">Domande frequenti</h2>
+        <details>
+          <summary>Con quanto anticipo devo prenotare?</summary>
+          <p>Ideale 48 ore prima. In caso di urgenza, contattaci: faremo il possibile per aiutarti.</p>
+        </details>
+        <details>
+          <summary>Quali mezzi avete a disposizione?</summary>
+          <p>Auto attrezzate e ambulanze per pazienti non autosufficienti, con operatori qualificati.</p>
+        </details>
+        <details>
+          <summary>Servite anche fuori Genova?</summary>
+          <p>Sì, su richiesta possiamo effettuare tratte extra-provinciali, previa valutazione.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Contatti -->
+    <section id="contatti">
+      <div class="container contact">
+        <div class="info">
+          <h2 class="section-title">Contattaci</h2>
+          <p class="muted">Saremo noi a ricontattarti entro poche ore per confermare disponibilità e tempi.</p>
+          <p><b>Telefono:</b> <a href="tel:+390000000000">+39 000 000 0000</a><br/>
+             <b>Email:</b> <a href="mailto:assistenzagenova@example.it">assistenzagenova@example.it</a></p>
+          <p><b>Orari:</b> Lun–Sab 7:00–20:00 · <b>Emergenze</b> su richiesta</p>
+        </div>
+        <form aria-label="Modulo di contatto" action="#" method="post" onsubmit="event.preventDefault(); this.reset(); alert('Richiesta inviata! Ti ricontatteremo a breve.');">
+          <div class="field">
+            <label for="nome">Nome e cognome</label>
+            <input id="nome" name="nome" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="tel">Telefono</label>
+            <input id="tel" name="telefono" type="tel" required autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="email">Email (opzionale)</label>
+            <input id="email" name="email" type="email" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="tipo">Tipo di richiesta</label>
+            <select id="tipo" name="tipo" required>
+              <option value="">Seleziona…</option>
+              <option>Trasporto sanitario programmato</option>
+              <option>Supporto a pazienti fragili</option>
+              <option>Trasferimento interstrutturale</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="messaggio">Dettagli (data, indirizzo, piano/ascensore, presidi)</label>
+            <textarea id="messaggio" name="messaggio" required></textarea>
+          </div>
+          <div class="agree">
+            <input id="privacy" type="checkbox" required aria-describedby="pinfo"/>
+            <label for="privacy">Accetto l'informativa privacy</label>
+          </div>
+          <p id="pinfo" class="muted">I tuoi dati saranno usati solo per gestire la richiesta. Nessun invio promozionale.</p>
+          <div style="margin-top:12px">
+            <button class="cta" type="submit">Invia richiesta</button>
+            <a class="cta secondary" href="tel:+390000000000">Chiama ora</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" role="contentinfo">
+      <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between">
+        <p>© <span id="year"></span> Pubblica Assistenza – Genova. Tutti i diritti riservati.</p>
+        <p><a href="#">Privacy</a> · <a href="#">Cookie</a> · <a href="#">Note legali</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky bar (mobile) -->
+  <div class="stickybar" aria-label="Azioni rapide">
+    <a class="cta" href="#contatti">Richiedi assistenza</a>
+    <a class="cta secondary" href="tel:+390000000000" aria-label="Chiama il numero di assistenza">Chiama</a>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
