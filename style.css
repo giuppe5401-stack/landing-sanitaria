@@ -1,58 +1,68 @@
-/* Tokens */
-:root{--bg:#ffe3ec;--text:#0d47a1;--card:#fff;--border:#e6e6e6;--muted:#10458f;--shadow:0 10px 24px rgba(0,0,0,.08);--radius:18px;--radius-sm:12px;}
-*{box-sizing:border-box} html,body{height:100%}
-body.bg{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+:root {
+  --bg:#fdeafo;
+  --card:#fff;
+  --brand:#1f5eff;
+  --ink:#0d1b3f;
+  --muted:#4d5a7a;
+  --radius:10px;
+}
 
-/* Balanced header (public only) */
-.header{display:flex;justify-content:center;align-items:center;gap:20px;padding:14px 20px;background:rgba(255,255,255,.6);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-.header .logo-wrap{display:none}
-.header nav{display:flex;gap:16px;align-items:center}
-.nav-link{color:var(--text);text-decoration:none}
-.nav-link:hover{text-decoration:underline}
+/* Reset base */
+body {
+  font-family: Inter, system-ui, sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+}
 
-.container{width:min(1200px,92%);margin:32px auto}
-.title{font-size:clamp(28px,4vw,44px);margin:0 0 8px}
-.subtitle{margin:0;color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.hero{padding:28px 22px;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3))}
-.hero-center{display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero-logo{height:56px;width:auto}
+/* Header + nav */
+header {
+  position:sticky; top:0; z-index:40;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(253,234,240,.9);
+  padding:14px 18px;
+}
 
-.services-section{margin-top:40px;text-align:center}
-.services-section h2{margin:0 0 28px;font-size:28px;font-weight:700}
-.services-grid{max-width:1200px;margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(4,1fr)}
-.service-card{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.brand {
+  display:flex; align-items:center; gap:10px; text-decoration:none;
+}
+.logo {
+  width:40px; height:40px; border-radius:12px;
+  display:grid; place-items:center;
+  background:var(--brand); color:#fff;
+}
+.brand-title { font-weight:800; color:var(--brand); }
 
-.footer{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:24px 20px;border-top:1px solid var(--border);background:rgba(255,255,255,.6)}
+nav ul {
+  list-style:none; display:flex; gap:18px; margin:0; padding:0;
+}
+nav a {
+  text-decoration:none; font-weight:600; color:var(--ink);
+}
+nav a:hover {
+  color:var(--brand);
+}
 
-.btn{display:inline-block;padding:10px 14px;border-radius:999px;border:1px solid var(--text);background:var(--text);color:#fff;font-weight:600;cursor:pointer;text-decoration:none}
-.btn:hover{filter:brightness(1.05)}
-input,select,textarea{padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);outline:none}
-input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(13,71,161,.15);border-color:#b8c7e5}
-.inline-form{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-.list { list-style:none; margin:0; padding:0; }
-.muted{color:var(--muted)}.small{font-size:.9rem}
+/* CTA base */
+.cta{
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--brand); color:#fff;
+  padding:10px 16px; border:2px solid var(--brand);
+  border-radius:var(--radius);
+  font-weight:700; text-decoration:none;
+}
+.cta:hover { color:#fff; }
 
-@media (max-width:1100px){.services-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:640px){.services-grid{grid-template-columns:1fr}}
+/* Variante bordo blu */
+.cta.secondary{
+  background:#fff; color:var(--brand);
+  border:2px solid var(--brand);
+}
 
-
-/* Cookie banner */
-.cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);border-top:1px solid var(--border);box-shadow:0 -8px 24px rgba(0,0,0,.06);padding:12px}
-.cookie-inner{max-width:min(1100px,92%);margin:0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.cookie-text{margin:0;color:var(--text)}
-.cookie-actions{display:flex;gap:10px}
-@media (max-width:560px){.cookie-inner{flex-direction:column;align-items:flex-start}}
-
-
-/* --- Pulizia card servizi --- */
-.service-card{gap:12px}
-.service-card h3{margin:0 0 6px}
-.service-card p{margin:0 0 10px}
-.card{padding:16px}
-.card .btn{margin-top:4px}
-.card-actions{margin-top:auto}
-
-/* --- Immagini e logo --- */
-img{display:block;max-width:100%;height:auto}
-.hero-logo{max-height:64px;width:auto;object-fit:contain}
+/* Volontario verde */
+.cta.volontario{
+  background:#28a745; border:2px solid #28a745; color:#fff;
+}
+.cta.volontario:hover{
+  background:#218838; border-color:#218838; color:#fff;
+}
