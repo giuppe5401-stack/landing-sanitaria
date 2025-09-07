@@ -4,9 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pubblica Assistenza – Genova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <a class="skip-link" href="#contenuto">Salta al contenuto</a>
+
   <header class="container nav" role="navigation" aria-label="Principale">
     <a class="brand" href="#">
       <span class="logo">
@@ -30,9 +35,97 @@
     </nav>
   </header>
 
-  <main>
-    <h1>Benvenuti nella Pubblica Assistenza</h1>
-    <p>Trasporti sanitari, supporto a pazienti e coordinamento mezzi.</p>
-  </main>
+  <!-- HERO -->
+  <section class="hero" id="contenuto">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>Assistenza rapida e organizzata a Genova</h1>
+        <p>Trasporti sanitari programmati, dimissioni, visite e supporto domiciliare. Squadre formate e mezzi attrezzati.</p>
+        <div class="hero-cta">
+          <a href="#contatti" class="cta">Chiama ora</a>
+          <a href="#servizi" class="cta secondary">Vedi i servizi</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Richiedi assistenza</h3>
+        <form>
+          <label>Data e ora
+            <input type="datetime-local" required>
+          </label>
+          <label>Partenza
+            <input type="text" placeholder="Via, civico, città" required>
+          </label>
+          <label>Destinazione
+            <input type="text" placeholder="Ospedale, clinica, domicilio" required>
+          </label>
+          <button class="cta" type="submit">Invia richiesta</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIZI -->
+  <section id="servizi" class="section container">
+    <h2>I nostri servizi</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Trasporti sanitari</h3>
+        <p>Ambulanze e mezzi attrezzati per visite, ricoveri e dimissioni.</p>
+      </div>
+      <div class="card">
+        <h3>Assistenza domiciliare</h3>
+        <p>Supporto programmato per persone fragili e non autosufficienti.</p>
+      </div>
+      <div class="card">
+        <h3>Eventi & prevenzione</h3>
+        <p>Presidi sanitari per eventi, screening e formazione.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COME FUNZIONA -->
+  <section id="come-funziona" class="section alt">
+    <div class="container">
+      <h2>Come funziona</h2>
+      <ol class="steps">
+        <li><strong>Contatto</strong> – chiamaci o compila la richiesta online</li>
+        <li><strong>Valutazione</strong> – verifichiamo esigenza, percorso e presidi</li>
+        <li><strong>Pianificazione</strong> – assegnazione mezzo e operatori</li>
+        <li><strong>Intervento</strong> – esecuzione e feedback</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section container">
+    <h2>Domande frequenti</h2>
+    <details class="faq"><summary>Serve impegnativa medica?</summary><p>No per i trasporti privati; sì se richiesto dalla struttura.</p></details>
+    <details class="faq"><summary>È possibile prenotare per domani?</summary><p>Sì, compatibilmente con disponibilità mezzi e operatori.</p></details>
+    <details class="faq"><summary>Accettate pagamento POS?</summary><p>Sì, POS a bordo e bonifico.</p></details>
+  </section>
+
+  <!-- CONTATTI -->
+  <section id="contatti" class="section alt">
+    <div class="container grid-2">
+      <div>
+        <h2>Contatti</h2>
+        <p><strong>Telefono:</strong> 010 000000 • <strong>Email:</strong> info@pubblica-assistenza.it</p>
+        <p><strong>Indirizzo:</strong> Via Esempio 1, Genova</p>
+      </div>
+      <form class="card">
+        <h3>Scrivici</h3>
+        <label>Nome <input type="text" required></label>
+        <label>Email <input type="email" required></label>
+        <label>Messaggio <textarea rows="4" required></textarea></label>
+        <button class="cta" type="submit">Invia</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <small>© Pubblica Assistenza – Genova</small>
+    </div>
+  </footer>
 </body>
 </html>
