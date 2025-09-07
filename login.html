@@ -18,13 +18,15 @@
     </a>
   </header>
 
-  <main class="container">
+  <main class="container section" style="max-width:520px">
     <h2>Area riservata</h2>
-    <form>
-      <label>Username</label><br/>
-      <input type="text" name="username" /><br/><br/>
-      <label>Password</label><br/>
-      <input type="password" name="password" /><br/><br/>
+    <form class="card">
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
       <button type="submit" class="cta">Accedi</button>
     </form>
   </main>
