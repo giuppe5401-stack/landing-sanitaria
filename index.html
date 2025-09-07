@@ -1,40 +1,188 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pubblica Assistenza – Demo Gestionale</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pubblica Assistenza – Area Riservata & Gestionale</title>
+  <meta name="color-scheme" content="light only" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">PUBBLICA ASSISTENZA</div>
+      <nav class="nav">
+        <a href="#area-riservata">Area riservata</a>
+        <a href="#gestionale" id="navGestionale">Gestionale</a>
+      </nav>
+    </div>
+  </header>
 
   <!-- AREA RISERVATA -->
   <section id="area-riservata" class="section">
-    <div class="container card">
-      <h2>Area riservata</h2>
-      <form id="loginForm">
-        <label>Email</label>
-        <input id="email" type="email" required placeholder="admin@demo.it">
-        <label>Password</label>
-        <input id="password" type="password" required placeholder="Demo123!">
-        <label><input type="checkbox" id="remember"> Ricordami</label>
-        <div id="formStatus" class="status" style="display:none"></div>
-        <button type="submit" class="btn">Accedi</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- GESTIONALE (inizialmente nascosto) -->
-  <section id="gestionale" class="section" style="display:none">
-    <div class="container card">
-      <div class="header">
-        <h2>Gestionale – Demo</h2>
-        <button id="logoutBtn" class="btn light">Logout</button>
+    <div class="container">
+      <div class="card auth">
+        <div class="auth-head">
+          <h1>Area riservata</h1>
+          <p>Accesso riservato al personale e ai volontari autorizzati.</p>
+        </div>
+        <form id="loginForm" class="auth-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="username" required placeholder="admin@demo.it" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="pwd-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Demo123!" />
+              <button type="button" id="togglePwd" class="btn light icon" aria-label="Mostra/Nascondi password">👁</button>
+            </div>
+          </div>
+          <div class="row">
+            <label class="check"><input type="checkbox" id="remember" /> Ricordami</label>
+            <a href="#" class="link muted" aria-disabled="true" title="Demo">Password dimenticata?</a>
+          </div>
+          <div id="formStatus" class="status" role="status" aria-live="polite" hidden></div>
+          <button type="submit" class="btn">Accedi</button>
+          <p class="hint muted">Demo: <code>admin@demo.it</code> / <code>Demo123!</code></p>
+        </form>
       </div>
-      <p>Benvenuto nell'area gestionale demo. Qui potresti gestire richieste, turni, mezzi e volontari.</p>
     </div>
   </section>
 
-  <script src="auth.js"></script>
+  <!-- GESTIONALE -->
+  <section id="gestionale" class="section" hidden>
+    <div class="container">
+      <div class="section-head">
+        <h1>Gestionale – Pubblica Assistenza</h1>
+        <div class="actions">
+          <button id="exportAllCsv" class="btn outline">Esporta CSV</button>
+          <button id="resetDemo" class="btn danger outline">Azzera demo</button>
+          <button id="logoutBtn" class="btn light">Logout</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card kpi"><div class="kpi-label">Richieste oggi</div><div id="kpi-req-today" class="kpi-value">0</div></div>
+        <div class="card kpi"><div class="kpi-label">Turni odierni</div><div id="kpi-shifts-today" class="kpi-value">0</div></div>
+        <div class="card kpi"><div class="kpi-label">Mezzi disponibili</div><div id="kpi-vehicles-ready" class="kpi-value">0</div></div>
+        <div class="card kpi"><div class="kpi-label">Volontari attivi</div><div id="kpi-volunteers-active" class="kpi-value">0</div></div>
+      </div>
+
+      <div class="card tabs">
+        <div class="tabbar">
+          <button class="tab-btn active" data-tab="tab-richieste">Richieste</button>
+          <button class="tab-btn" data-tab="tab-turni">Turni</button>
+          <button class="tab-btn" data-tab="tab-mezzi">Mezzi</button>
+          <button class="tab-btn" data-tab="tab-volontari">Volontari</button>
+          <button class="tab-btn" data-tab="tab-report">Report</button>
+          <div class="spacer"></div>
+          <input id="globalSearch" type="search" class="input" placeholder="Cerca in tab…" aria-label="Cerca" />
+        </div>
+
+        <div class="tabcontent">
+          <div id="tab-richieste">
+            <div class="toolbar">
+              <select id="filterReqStatus" class="input" aria-label="Filtra per stato">
+                <option value="">Stato: tutti</option>
+                <option value="Nuova">Nuova</option>
+                <option value="Pianificata">Pianificata</option>
+                <option value="Completata">Completata</option>
+                <option value="Annullata">Annullata</option>
+              </select>
+              <input id="filterReqDate" type="date" class="input" aria-label="Filtra per data" />
+              <button id="addReqBtn" class="btn">+ Aggiungi richiesta</button>
+            </div>
+            <div class="table-wrap">
+              <table id="tblRichieste" class="table">
+                <thead><tr>
+                  <th>Data/Ora</th><th>Paziente</th><th>Da → A</th><th>Note</th><th>Stato</th><th>Azioni</th>
+                </tr></thead><tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-turni" class="hidden">
+            <div class="toolbar">
+              <input id="filterShiftDate" type="date" class="input" aria-label="Filtra data turni" />
+              <button id="addShiftBtn" class="btn">+ Aggiungi turno</button>
+            </div>
+            <div class="table-wrap">
+              <table id="tblTurni" class="table">
+                <thead><tr>
+                  <th>Data</th><th>Fascia</th><th>Mezzo</th><th>Equipaggio</th><th>Azioni</th>
+                </tr></thead><tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-mezzi" class="hidden">
+            <div class="toolbar">
+              <select id="filterVehicleState" class="input" aria-label="Filtra stato mezzo">
+                <option value="">Stato: tutti</option>
+                <option value="Disponibile">Disponibile</option>
+                <option value="In servizio">In servizio</option>
+                <option value="Officina">Officina</option>
+              </select>
+              <button id="addVehicleBtn" class="btn">+ Aggiungi mezzo</button>
+            </div>
+            <div class="table-wrap">
+              <table id="tblMezzi" class="table">
+                <thead><tr>
+                  <th>Targa</th><th>Tipo</th><th>Stato</th><th>Note</th><th>Azioni</th>
+                </tr></thead><tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-volontari" class="hidden">
+            <div class="toolbar">
+              <input id="filterVolunteer" type="search" class="input" placeholder="Cerca volontario…" />
+              <button id="addVolunteerBtn" class="btn">+ Aggiungi volontario</button>
+            </div>
+            <div class="table-wrap">
+              <table id="tblVolontari" class="table">
+                <thead><tr>
+                  <th>Nome</th><th>Ruolo</th><th>Contatti</th><th>Disponibilità</th><th>Azioni</th>
+                </tr></thead><tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-report" class="hidden">
+            <div class="toolbar">
+              <input id="repFrom" type="date" class="input" />
+              <input id="repTo" type="date" class="input" />
+              <button id="buildReport" class="btn">Genera report</button>
+            </div>
+            <pre id="reportOut" class="report" aria-live="polite"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODALE -->
+    <dialog id="modal" class="modal">
+      <form method="dialog" id="modalForm" class="modal-card">
+        <div class="modal-head">
+          <h3 id="modalTitle">Titolo</h3>
+          <button id="modalClose" value="cancel" class="icon" aria-label="Chiudi">✕</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+        <div class="modal-foot">
+          <button id="modalCancel" value="cancel" class="btn light">Annulla</button>
+          <button id="modalOk" value="ok" class="btn">Salva</button>
+        </div>
+      </form>
+    </dialog>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <small>Demo frontend – collega un backend per uso in produzione.</small>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
