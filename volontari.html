@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diventa volontario – Pubblica Assistenza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container nav">
+    <a class="brand" href="index.html">
+      <span class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M11 4h2v16h-2zM4 11h16v2H4z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-title">PUBBLICA ASSISTENZA</span>
+    </a>
+    <nav><ul>
+      <li><a href="index.html#servizi">Servizi</a></li>
+      <li><a href="login.html" class="cta secondary">Area riservata</a></li>
+    </ul></nav>
+  </header>
+
+  <section class="section container">
+    <h1>Diventa volontario</h1>
+    <p>Unisciti alla nostra squadra: formazione, affiancamento e assicurazione a carico dell’associazione.</p>
+
+    <form class="card" action="#" method="POST">
+      <div class="grid-2">
+        <label>Nome <input type="text" name="nome" required></label>
+        <label>Cognome <input type="text" name="cognome" required></label>
+        <label>Email <input type="email" name="email" required></label>
+        <label>Telefono <input type="tel" name="telefono" required></label>
+        <label>Età <input type="number" name="eta" min="16" max="99" required></label>
+        <label>Disponibilità (giorni/orari) <input type="text" name="disponibilita" required placeholder="Es. Lun–Ven 9–13; Sabato alterni"></label>
+        <label style="grid-column:1/-1">Esperienza (anche non sanitaria)
+          <textarea name="esperienza" rows="3" placeholder="Descrivi eventuali esperienze utili"></textarea>
+        </label>
+        <label style="grid-column:1/-1">Motivazione*
+          <textarea name="motivazione" rows="4" required placeholder="Perché vuoi diventare volontario?"></textarea>
+        </label>
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;margin-top:8px">
+        <input type="checkbox" required> Dichiaro di aver letto l’informativa privacy.
+      </label>
+      <input type="hidden" name="tipo_richiesta" value="candidatura_volontario">
+      <button class="cta" type="submit">Invia candidatura</button>
+      <p class="muted" style="margin-top:8px">Imposta l’attributo <code>action</code> del form per collegarlo alla tua inbox o API.</p>
+    </form>
+  </section>
+</body>
+</html>

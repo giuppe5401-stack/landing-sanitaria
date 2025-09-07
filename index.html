@@ -3,186 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pubblica Assistenza – Area Riservata & Gestionale</title>
-  <meta name="color-scheme" content="light only" />
+  <title>Pubblica Assistenza – Genova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <div class="brand">PUBBLICA ASSISTENZA</div>
-      <nav class="nav">
-        <a href="#area-riservata">Area riservata</a>
-        <a href="#gestionale" id="navGestionale">Gestionale</a>
-      </nav>
-    </div>
+  <a class="skip-link" href="#contenuto">Salta al contenuto</a>
+
+  <header class="container nav" role="navigation" aria-label="Principale">
+    <a class="brand" href="#">
+      <span class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M11 4h2v16h-2zM4 11h16v2H4z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-title">PUBBLICA ASSISTENZA</span>
+    </a>
+
+    <nav>
+      <ul>
+        <li><a href="#servizi">Servizi</a></li>
+        <li><a href="#come-funziona">Come funziona</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+        <li><a href="login.html" class="cta secondary">Area riservata</a></li>
+        <li><a href="#contatti" class="cta">Contattaci</a></li>
+        <li><a href="volontari.html" class="cta volontario">Diventa volontario</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- AREA RISERVATA -->
-  <section id="area-riservata" class="section">
-    <div class="container">
-      <div class="card auth">
-        <div class="auth-head">
-          <h1>Area riservata</h1>
-          <p>Accesso riservato al personale e ai volontari autorizzati.</p>
+  <!-- HERO -->
+  <section class="hero" id="contenuto">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>Assistenza rapida e organizzata a Genova</h1>
+        <p>Trasporti sanitari programmati, dimissioni, visite e supporto domiciliare. Squadre formate e mezzi attrezzati.</p>
+        <div class="hero-cta">
+          <a href="#contatti" class="cta">Chiama ora</a>
+          <a href="#servizi" class="cta secondary">Vedi i servizi</a>
+          <a href="volontari.html" class="cta">Diventa volontario</a>
         </div>
-        <form id="loginForm" class="auth-form" novalidate>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="username" required placeholder="admin@demo.it" />
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <div class="pwd-wrap">
-              <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Demo123!" />
-              <button type="button" id="togglePwd" class="btn light icon" aria-label="Mostra/Nascondi password">👁</button>
-            </div>
-          </div>
-          <div class="row">
-            <label class="check"><input type="checkbox" id="remember" /> Ricordami</label>
-            <a href="#" class="link muted" aria-disabled="true" title="Demo">Password dimenticata?</a>
-          </div>
-          <div id="formStatus" class="status" role="status" aria-live="polite" hidden></div>
-          <button type="submit" class="btn">Accedi</button>
-          <p class="hint muted">Demo: <code>admin@demo.it</code> / <code>Demo123!</code></p>
+      </div>
+      <div class="hero-card">
+        <h3>Richiedi assistenza</h3>
+        <form>
+          <label>Data e ora
+            <input type="datetime-local" required>
+          </label>
+          <label>Partenza
+            <input type="text" placeholder="Via, civico, città" required>
+          </label>
+          <label>Destinazione
+            <input type="text" placeholder="Ospedale, clinica, domicilio" required>
+          </label>
+          <button class="cta" type="submit">Invia richiesta</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- GESTIONALE -->
-  <section id="gestionale" class="section" hidden>
-    <div class="container">
-      <div class="section-head">
-        <h1>Gestionale – Pubblica Assistenza</h1>
-        <div class="actions">
-          <button id="exportAllCsv" class="btn outline">Esporta CSV</button>
-          <button id="resetDemo" class="btn danger outline">Azzera demo</button>
-          <button id="logoutBtn" class="btn light">Logout</button>
-        </div>
+  <!-- SERVIZI -->
+  <section id="servizi" class="section container">
+    <h2>I nostri servizi</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Trasporti sanitari</h3>
+        <p>Ambulanze e mezzi attrezzati per visite, ricoveri e dimissioni.</p>
       </div>
-
-      <div class="kpi-grid">
-        <div class="card kpi"><div class="kpi-label">Richieste oggi</div><div id="kpi-req-today" class="kpi-value">0</div></div>
-        <div class="card kpi"><div class="kpi-label">Turni odierni</div><div id="kpi-shifts-today" class="kpi-value">0</div></div>
-        <div class="card kpi"><div class="kpi-label">Mezzi disponibili</div><div id="kpi-vehicles-ready" class="kpi-value">0</div></div>
-        <div class="card kpi"><div class="kpi-label">Volontari attivi</div><div id="kpi-volunteers-active" class="kpi-value">0</div></div>
+      <div class="card">
+        <h3>Assistenza domiciliare</h3>
+        <p>Supporto programmato per persone fragili e non autosufficienti.</p>
       </div>
-
-      <div class="card tabs">
-        <div class="tabbar">
-          <button class="tab-btn active" data-tab="tab-richieste">Richieste</button>
-          <button class="tab-btn" data-tab="tab-turni">Turni</button>
-          <button class="tab-btn" data-tab="tab-mezzi">Mezzi</button>
-          <button class="tab-btn" data-tab="tab-volontari">Volontari</button>
-          <button class="tab-btn" data-tab="tab-report">Report</button>
-          <div class="spacer"></div>
-          <input id="globalSearch" type="search" class="input" placeholder="Cerca in tab…" aria-label="Cerca" />
-        </div>
-
-        <div class="tabcontent">
-          <div id="tab-richieste">
-            <div class="toolbar">
-              <select id="filterReqStatus" class="input" aria-label="Filtra per stato">
-                <option value="">Stato: tutti</option>
-                <option value="Nuova">Nuova</option>
-                <option value="Pianificata">Pianificata</option>
-                <option value="Completata">Completata</option>
-                <option value="Annullata">Annullata</option>
-              </select>
-              <input id="filterReqDate" type="date" class="input" aria-label="Filtra per data" />
-              <button id="addReqBtn" class="btn">+ Aggiungi richiesta</button>
-            </div>
-            <div class="table-wrap">
-              <table id="tblRichieste" class="table">
-                <thead><tr>
-                  <th>Data/Ora</th><th>Paziente</th><th>Da → A</th><th>Note</th><th>Stato</th><th>Azioni</th>
-                </tr></thead><tbody></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="tab-turni" class="hidden">
-            <div class="toolbar">
-              <input id="filterShiftDate" type="date" class="input" aria-label="Filtra data turni" />
-              <button id="addShiftBtn" class="btn">+ Aggiungi turno</button>
-            </div>
-            <div class="table-wrap">
-              <table id="tblTurni" class="table">
-                <thead><tr>
-                  <th>Data</th><th>Fascia</th><th>Mezzo</th><th>Equipaggio</th><th>Azioni</th>
-                </tr></thead><tbody></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="tab-mezzi" class="hidden">
-            <div class="toolbar">
-              <select id="filterVehicleState" class="input" aria-label="Filtra stato mezzo">
-                <option value="">Stato: tutti</option>
-                <option value="Disponibile">Disponibile</option>
-                <option value="In servizio">In servizio</option>
-                <option value="Officina">Officina</option>
-              </select>
-              <button id="addVehicleBtn" class="btn">+ Aggiungi mezzo</button>
-            </div>
-            <div class="table-wrap">
-              <table id="tblMezzi" class="table">
-                <thead><tr>
-                  <th>Targa</th><th>Tipo</th><th>Stato</th><th>Note</th><th>Azioni</th>
-                </tr></thead><tbody></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="tab-volontari" class="hidden">
-            <div class="toolbar">
-              <input id="filterVolunteer" type="search" class="input" placeholder="Cerca volontario…" />
-              <button id="addVolunteerBtn" class="btn">+ Aggiungi volontario</button>
-            </div>
-            <div class="table-wrap">
-              <table id="tblVolontari" class="table">
-                <thead><tr>
-                  <th>Nome</th><th>Ruolo</th><th>Contatti</th><th>Disponibilità</th><th>Azioni</th>
-                </tr></thead><tbody></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="tab-report" class="hidden">
-            <div class="toolbar">
-              <input id="repFrom" type="date" class="input" />
-              <input id="repTo" type="date" class="input" />
-              <button id="buildReport" class="btn">Genera report</button>
-            </div>
-            <pre id="reportOut" class="report" aria-live="polite"></pre>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Eventi & prevenzione</h3>
+        <p>Presidi sanitari per eventi, screening e formazione.</p>
       </div>
     </div>
+  </section>
 
-    <!-- MODALE -->
-    <dialog id="modal" class="modal">
-      <form method="dialog" id="modalForm" class="modal-card">
-        <div class="modal-head">
-          <h3 id="modalTitle">Titolo</h3>
-          <button id="modalClose" value="cancel" class="icon" aria-label="Chiudi">✕</button>
-        </div>
-        <div id="modalBody" class="modal-body"></div>
-        <div class="modal-foot">
-          <button id="modalCancel" value="cancel" class="btn light">Annulla</button>
-          <button id="modalOk" value="ok" class="btn">Salva</button>
-        </div>
+  <!-- COME FUNZIONA -->
+  <section id="come-funziona" class="section alt">
+    <div class="container">
+      <h2>Come funziona</h2>
+      <ol class="steps">
+        <li><strong>Contatto</strong> – chiamaci o compila la richiesta online</li>
+        <li><strong>Valutazione</strong> – verifichiamo esigenza, percorso e presidi</li>
+        <li><strong>Pianificazione</strong> – assegnazione mezzo e operatori</li>
+        <li><strong>Intervento</strong> – esecuzione e feedback</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section container">
+    <h2>Domande frequenti</h2>
+    <details class="faq"><summary>Serve impegnativa medica?</summary><p>No per i trasporti privati; sì se richiesto dalla struttura.</p></details>
+    <details class="faq"><summary>È possibile prenotare per domani?</summary><p>Sì, compatibilmente con disponibilità mezzi e operatori.</p></details>
+    <details class="faq"><summary>Accettate pagamento POS?</summary><p>Sì, POS a bordo e bonifico.</p></details>
+  </section>
+
+  <!-- CONTATTI -->
+  <section id="contatti" class="section alt">
+    <div class="container grid-2">
+      <div>
+        <h2>Contatti</h2>
+        <p><strong>Telefono:</strong> 010 000000 • <strong>Email:</strong> info@pubblica-assistenza.it</p>
+        <p><strong>Indirizzo:</strong> Via Esempio 1, Genova</p>
+      </div>
+      <form class="card">
+        <h3>Scrivici</h3>
+        <label>Nome <input type="text" required></label>
+        <label>Email <input type="email" required></label>
+        <label>Messaggio <textarea rows="4" required></textarea></label>
+        <button class="cta" type="submit">Invia</button>
       </form>
-    </dialog>
+    </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <small>Demo frontend – collega un backend per uso in produzione.</small>
+      <small>© Pubblica Assistenza – Genova</small>
     </div>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>
