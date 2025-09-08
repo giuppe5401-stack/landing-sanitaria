@@ -40,32 +40,36 @@
 
   <!-- HERO -->
   <section class="hero" id="contenuto">
-    <div class="container hero-inner">
-      <div class="hero-text">
-        <h1>Assistenza rapida e organizzata a Genova</h1>
-        <p>Trasporti sanitari programmati, dimissioni, visite e supporto domiciliare. Squadre formate e mezzi attrezzati.</p>
-        <div class="hero-cta">
-          <a href="#contatti" class="cta">Chiama ora</a>
-          <a href="#servizi" class="cta secondary">Vedi i servizi</a>
-          <a href="volontari.html" class="cta">Diventa volontario</a>
-        </div>
-      </div>
-      <div class="hero-card">
-        <h3>Richiedi assistenza</h3>
-        <form>
-          <label>Data e ora
-            <input type="datetime-local" required>
-          </label>
-          <label>Partenza
-            <input type="text" placeholder="Via, civico, città" required>
-          </label>
-          <label>Destinazione
-            <input type="text" placeholder="Ospedale, clinica, domicilio" required>
-          </label>
-          <button class="cta" type="submit">Invia richiesta</button>
-        </form>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Assistenza rapida e organizzata a Genova</h1>
+      <p>Trasporti sanitari programmati, dimissioni, visite e supporto domiciliare. Squadre formate e mezzi attrezzati.</p>
+      <div class="hero-cta">
+        <a href="#contatti" class="cta">Chiama ora</a>
+        <a href="#servizi" class="cta secondario">Vedi i servizi</a>
+        <!-- Togli se non vuoi la parte volontari -->
+        <!-- <a href="volontari.html" class="cta">Diventa volontario</a> -->
       </div>
     </div>
+
+    <div class="card hero-card">
+      <h3>Richiedi assistenza</h3>
+      <form action="#" method="POST">
+        <label for="when">Data e ora</label>
+        <input id="when" name="when" type="datetime-local" required>
+
+        <label for="from">Partenza</label>
+        <input id="from" name="from" type="text" placeholder="Via, civico, città" required>
+
+        <label for="to">Destinazione</label>
+        <input id="to" name="to" type="text" placeholder="Ospedale, clinica, domicilio" required>
+
+        <button class="cta" type="submit">Invia richiesta</button>
+      </form>
+    </div>
+  </div>
+</section>
+
   </section>
 
   <!-- SERVIZI -->
