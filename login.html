@@ -1,13 +1,9 @@
 <!doctype html>
-<html lang="it">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Area riservata | PIN</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
-  <link rel="stylesheet" href="/style.css" />
-  <style>.login{max-width:520px;margin:60px auto}</style>
-</head>
+<html lang="it"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Area riservata | PIN</title>
+<link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/><link rel="stylesheet" href="/style.css"/>
+<style>.login{max-width:520px;margin:60px auto}</style></head>
 <body>
 <main class="login card center">
   <img src="/assets/logo.svg" alt="" width="36" height="36"/>
@@ -21,12 +17,11 @@
 <script>
 function login(e){
   e.preventDefault();
-  const VALID = '1357'; // cambia qui
+  const VALID = '1357'; // CAMBIA QUI IL PIN
   const pin = document.getElementById('pin').value.trim();
   if(pin === VALID){ sessionStorage.setItem('med_auth','ok'); location.href = '/reserved/index.html'; }
   else{ alert('PIN errato'); }
   return false;
 }
 </script>
-</body>
-</html>
+</body></html>
