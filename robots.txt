@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://giuppe5401-stack.github.io/sitemap.xml

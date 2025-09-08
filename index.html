@@ -1,1 +1,138 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pubblica Assistenza | Trasporti sanitari e supporto</title>
+  <meta name="description" content="Trasporti sanitari programmati, dimissioni, visite e assistenza a domicilio. Squadre formate e mezzi attrezzati.">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header class="header" aria-label="Principale">
+  <div class="container nav">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" fill="#0a5c5c"/></svg>
+      <span>PUBBLICA ASSISTENZA</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#servizi">Servizi</a></li>
+        <li><a href="#come-funziona">Come funziona</a></li>
+        <li><a href="#faq">Domande frequenti</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+        <li><a class="cta secondary" href="/login.html">Area riservata</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
+<section class="hero" id="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>Assistenza rapida e organizzata a Genova</h1>
+      <p class="lead">Trasporti sanitari programmati, dimissioni, visite e supporto domiciliare. Squadre formate e mezzi attrezzati.</p>
+      <div class="badges">
+        <span class="badge">Servizio 7/7</span>
+        <span class="badge">Personale qualificato</span>
+        <span class="badge">Copertura provinciale</span>
+      </div>
+      <p style="margin-top:14px">
+        <a href="#contatti" class="cta primary">Chiama ora</a>
+        <a href="#servizi" class="cta secondary">Vedi i servizi</a>
+      </p>
+    </div>
+    <div class="card compact-form">
+      <h3 style="margin-top:0">Richiedi assistenza</h3>
+      <form action="#" method="POST" novalidate>
+        <div class="field">
+          <label for="when">Data e ora</label>
+          <input id="when" name="when" type="datetime-local" required />
+        </div>
+        <div class="field">
+          <label for="from">Partenza</label>
+          <input id="from" name="from" type="text" placeholder="Via, civico, città" required />
+        </div>
+        <div class="field">
+          <label for="to">Destinazione</label>
+          <input id="to" name="to" type="text" placeholder="Ospedale, clinica, domicilio" required />
+        </div>
+        <div class="field field--full">
+          <label for="notes">Note</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Es. persona su sedia, necessita ossigeno"></textarea>
+        </div>
+        <button class="cta primary" type="submit">Invia richiesta</button>
+      </form>
+      <p class="sub" style="margin-top:8px">Preferisci al telefono? <strong>010 000 000</strong></p>
+    </div>
+  </div>
+</section>
+
+<section id="servizi" class="section">
+  <div class="container">
+    <h2>I nostri servizi</h2>
+    <p class="sub">Interventi programmati con equipaggi formati e mezzi attrezzati.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Trasporti sanitari</h3>
+        <p>Visite, ricoveri, dimissioni. Barelle e carrozzine con operatori qualificati.</p>
+      </div>
+      <div class="card">
+        <h3>Assistenza domiciliare</h3>
+        <p>Supporto programmato per persone fragili e non autosufficienti.</p>
+      </div>
+      <div class="card">
+        <h3>Eventi & prevenzione</h3>
+        <p>Presidi sanitari per eventi, screening e formazione.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="come-funziona" class="section">
+  <div class="container">
+    <h2>Come funziona</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><strong>Richiesta</strong><p>Ci contatti o compili il modulo con data, luogo e necessità.</p></div>
+      <div class="step"><span class="n">2</span><strong>Conferma</strong><p>Ti richiamiamo rapidamente per confermare orari e dettagli.</p></div>
+      <div class="step"><span class="n">3</span><strong>Intervento</strong><p>Eseguiamo il servizio con equipaggio e mezzo adeguato.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="section">
+  <div class="container">
+    <h2>Domande frequenti</h2>
+    <div class="faq">
+      <details><summary>Quali informazioni servono per prenotare?</summary><p>Data/ora, indirizzo di partenza e destinazione, condizioni del paziente (deambulazione, piano, ascensore, ossigeno).</p></details>
+      <details><summary>Coprite anche le domeniche?</summary><p>Sì, organizziamo interventi programmati 7 giorni su 7.</p></details>
+      <details><summary>Posso richiedere fattura?</summary><p>Certo, forniamo regolare documentazione fiscale per ogni servizio.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="contatti" class="section">
+  <div class="container contact-grid">
+    <div class="card">
+      <h2>Contattaci</h2>
+      <form action="#" method="POST" novalidate>
+        <div class="field"><label for="name">Nome</label><input id="name" name="name" type="text" required autocomplete="name"></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field field--full"><label for="message">Messaggio</label><textarea id="message" name="message" rows="5" required></textarea></div>
+        <button type="submit" class="cta primary">Invia</button>
+      </form>
+    </div>
+    <div class="map card">
+      <strong>Mappa/Orari</strong>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div>&copy; 2025 Pubblica Assistenza</div>
+    <div><a href="/privacy.html">Privacy</a></div>
+  </div>
+</footer>
+</body>
+</html>
