@@ -1,27 +1,168 @@
-<!doctype html>
-<html lang="it"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Area riservata | PIN</title>
-<link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/><link rel="stylesheet" href="/style.css"/>
-<style>.login{max-width:520px;margin:60px auto}</style></head>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Area riservata – Pubblica Assistenza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-<main class="login card center">
-  <img src="/assets/logo.svg" alt="" width="36" height="36"/>
-  <h1>Accesso area riservata</h1>
-  <form onsubmit="return login(event)">
-    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" required placeholder="Es. 1357"></div>
-    <button class="btn primary" type="submit">Entra</button>
-  </form>
-  <p class="sub" style="margin-top:10px">Protezione lato client — per contenuti non sensibili.</p>
-</main>
-<script>
-function login(e){
-  e.preventDefault();
-  const VALID = '1357'; // CAMBIA QUI IL PIN
-  const pin = document.getElementById('pin').value.trim();
-  if(pin === VALID){ sessionStorage.setItem('med_auth','ok'); location.href = '/reserved/index.html'; }
-  else{ alert('PIN errato'); }
-  return false;
-}
-</script>
-</body></html>
+  <header class="container nav">
+    <a class="brand" href="index.html">
+      <span class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M11 4h2v16h-2zM4 11h16v2H4z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-title">PUBBLICA ASSISTENZA</span>
+    </a>
+    <nav><ul>
+      <li><a href="index.html#servizi">Servizi</a></li>
+      <li><a href="index.html#contatti">Contatti</a></li>
+      <li><a href="volontari.html" class="cta">Diventa volontario</a></li>
+    </ul></nav>
+  </header>
+
+  <section class="section">
+    <div class="container grid-2">
+      <div class="card">
+        <h2>Area riservata</h2>
+        <p>Accesso per personale e volontari autorizzati.</p>
+        <form id="loginForm">
+          <label>Email <input id="email" type="email" required placeholder="admin@demo.it"></label>
+          <label>Password
+            <div style="display:flex;gap:8px">
+              <input id="password" type="password" required placeholder="Demo123!" style="flex:1">
+              <button type="button" id="togglePwd" class="cta secondary" style="padding:10px 14px">👁</button>
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:6px">
+            <input id="remember" type="checkbox"> Ricordami
+          </label>
+          <div id="formStatus" class="faq" style="display:none;background:#fdeaea;color:#a40000">Credenziali non valide.</div>
+          <button type="submit" class="cta">Accedi</button>
+          <p class="muted" style="margin-top:8px">Demo: <code>admin@demo.it</code> / <code>Demo123!</code></p>
+        </form>
+      </div>
+
+      <!-- Gestionale -->
+      <div class="card" id="gestionale" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <h2 style="margin:0">Gestionale – Demo</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="exportAllCsv" class="cta secondary">Esporta CSV</button>
+            <button id="resetDemo" class="cta secondary" style="border-color:#c0392b;color:#c0392b">Azzera demo</button>
+            <button id="logoutBtn" class="cta secondary">Logout</button>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="grid-3" style="margin-top:12px">
+          <div class="card"><div>Richieste oggi</div><div id="kpi-req-today" style="font-weight:800;font-size:1.6rem">0</div></div>
+          <div class="card"><div>Turni odierni</div><div id="kpi-shifts-today" style="font-weight:800;font-size:1.6rem">0</div></div>
+          <div class="card"><div>Mezzi disponibili</div><div id="kpi-vehicles-ready" style="font-weight:800;font-size:1.6rem">0</div></div>
+        </div>
+
+        <div class="card" style="padding:0;margin-top:12px">
+          <div class="tabbar" style="display:flex;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:10px;flex-wrap:wrap">
+            <button class="tab-btn cta secondary" data-tab="tab-richieste">Richieste</button>
+            <button class="tab-btn" data-tab="tab-turni">Turni</button>
+            <button class="tab-btn" data-tab="tab-mezzi">Mezzi</button>
+            <button class="tab-btn" data-tab="tab-volontari">Volontari</button>
+            <button class="tab-btn" data-tab="tab-report">Report</button>
+            <div style="margin-left:auto"></div>
+            <input id="globalSearch" type="search" class="cta secondary" placeholder="Cerca…" style="border-width:1px">
+          </div>
+
+          <div style="padding:16px">
+            <div id="tab-richieste">
+              <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <select id="filterReqStatus" class="cta secondary" style="border-width:1px">
+                  <option value="">Stato: tutti</option>
+                  <option value="Nuova">Nuova</option>
+                  <option value="Pianificata">Pianificata</option>
+                  <option value="Completata">Completata</option>
+                  <option value="Annullata">Annullata</option>
+                </select>
+                <input id="filterReqDate" type="date" class="cta secondary" style="border-width:1px">
+                <button id="addReqBtn" class="cta">+ Aggiungi richiesta</button>
+              </div>
+              <div class="table-wrap">
+                <table id="tblRichieste" class="table">
+                  <thead><tr>
+                    <th>Data/Ora</th><th>Paziente</th><th>Da → A</th><th>Note</th><th>Stato</th><th>Azioni</th>
+                  </tr></thead><tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="tab-turni" style="display:none">
+              <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <input id="filterShiftDate" type="date" class="cta secondary" style="border-width:1px">
+                <button id="addShiftBtn" class="cta">+ Aggiungi turno</button>
+              </div>
+              <div class="table-wrap"><table id="tblTurni" class="table">
+                <thead><tr><th>Data</th><th>Fascia</th><th>Mezzo</th><th>Equipaggio</th><th>Azioni</th></tr></thead><tbody></tbody>
+              </table></div>
+            </div>
+
+            <div id="tab-mezzi" style="display:none">
+              <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <select id="filterVehicleState" class="cta secondary" style="border-width:1px">
+                  <option value="">Stato: tutti</option>
+                  <option value="Disponibile">Disponibile</option>
+                  <option value="In servizio">In servizio</option>
+                  <option value="Officina">Officina</option>
+                </select>
+                <button id="addVehicleBtn" class="cta">+ Aggiungi mezzo</button>
+              </div>
+              <div class="table-wrap"><table id="tblMezzi" class="table">
+                <thead><tr><th>Targa</th><th>Tipo</th><th>Stato</th><th>Note</th><th>Azioni</th></tr></thead><tbody></tbody>
+              </table></div>
+            </div>
+
+            <div id="tab-volontari" style="display:none">
+              <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <input id="filterVolunteer" type="search" class="cta secondary" placeholder="Cerca volontario…" style="border-width:1px">
+                <button id="addVolunteerBtn" class="cta">+ Aggiungi volontario</button>
+              </div>
+              <div class="table-wrap"><table id="tblVolontari" class="table">
+                <thead><tr><th>Nome</th><th>Ruolo</th><th>Contatti</th><th>Disponibilità</th><th>Azioni</th></tr></thead><tbody></tbody>
+              </table></div>
+            </div>
+
+            <div id="tab-report" style="display:none">
+              <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <input id="repFrom" type="date" class="cta secondary" style="border-width:1px">
+                <input id="repTo" type="date" class="cta secondary" style="border-width:1px">
+                <button id="buildReport" class="cta">Genera report</button>
+              </div>
+              <pre id="reportOut" class="card" style="background:#fafafa;border:1px solid #eee"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modale -->
+  <dialog id="modal" class="modal">
+    <form method="dialog" id="modalForm" class="card" style="padding:0;overflow:hidden">
+      <div style="padding:16px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center">
+        <h3 id="modalTitle" style="margin:0">Titolo</h3>
+        <button id="modalClose" value="cancel" class="cta secondary" style="padding:8px 12px">✕</button>
+      </div>
+      <div id="modalBody" style="padding:16px;display:grid;gap:12px"></div>
+      <div style="padding:12px 16px;background:#fafafa;border-top:1px solid #eee;display:flex;gap:8px;justify-content:flex-end">
+        <button id="modalCancel" value="cancel" class="cta secondary">Annulla</button>
+        <button id="modalOk" value="ok" class="cta">Salva</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
