@@ -6,7 +6,6 @@
   <title>Area riservata</title>
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
   <link rel="stylesheet" href="/style.css" />
-  <style>.guard{display:none}</style>
 </head>
 <body>
 <header class="header"><div class="container nav">
@@ -15,7 +14,7 @@
 </div></header>
 
 <section class="section container">
-  <h1>Console interna</h1>
+  <h1>Turni & Mezzi (demo)</h1>
   <div class="grid-2">
     <div class="card"><h3>Turni</h3><ul class="list"><li>Oggi 08–20: Squadra A</li><li>Oggi 20–08: Squadra B</li></ul></div>
     <div class="card"><h3>Mezzi</h3><ul class="list"><li>Amb 01 — operativo</li><li>Amb 02 — manutenzione</li></ul></div>
@@ -24,11 +23,11 @@
 
 <script>
 (function(){
-  const ok = sessionStorage.getItem('pa_auth') === 'ok';
+  const ok = sessionStorage.getItem('am_auth') === 'ok';
   if(!ok){ location.href = '/login.html'; }
 })();
 function logout(){
-  sessionStorage.removeItem('pa_auth');
+  sessionStorage.removeItem('am_auth');
   location.href = '/';
 }
 </script>

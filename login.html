@@ -3,34 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Area riservata | Login</title>
+  <title>Demo area riservata | PIN</title>
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
   <link rel="stylesheet" href="/style.css" />
-  <style>.login{max-width:520px;margin:60px auto}.notice{color:#5b6b6b}</style>
+  <style>.login{max-width:520px;margin:60px auto}</style>
 </head>
 <body>
 <header class="header"><div class="container nav">
-  <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" fill="#0a5c5c"/></svg><span>Pubblica Assistenza</span></a>
+  <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" fill="#0a5c5c"/></svg><span>Demo area riservata</span></a>
 </div></header>
 
 <main class="login card container">
-  <h1>Area riservata</h1>
-  <p class="notice">Accesso per personale. Inserisci il PIN temporaneo per accedere ai turni/mezzi.</p>
+  <h1>Inserisci PIN</h1>
   <form onsubmit="return login(event)">
-    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" required placeholder="Es. 1234"></div>
+    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" required placeholder="Es. 2468"></div>
     <button class="cta primary" type="submit">Entra</button>
   </form>
-  <p class="notice" style="margin-top:10px">Nota: questo è un gate <em>client‑side</em> adatto a documenti interni non sensibili su GitHub Pages.</p>
+  <p class="sub" style="margin-top:10px">Nota: protezione client‑side adatta a contenuti non sensibili.</p>
 </main>
 
 <script>
 function login(e){
   e.preventDefault();
   const pin = document.getElementById('pin').value.trim();
-  // TODO: cambia il PIN qui sotto
-  const VALID = '1234';
+  const VALID = '2468'; // cambia qui
   if(pin === VALID){
-    sessionStorage.setItem('pa_auth','ok');
+    sessionStorage.setItem('am_auth','ok');
     location.href = '/reserved/index.html';
   }else{
     alert('PIN errato');
