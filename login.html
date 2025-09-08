@@ -3,36 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demo area riservata | PIN</title>
+  <title>Area riservata | PIN</title>
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
   <link rel="stylesheet" href="/style.css" />
   <style>.login{max-width:520px;margin:60px auto}</style>
 </head>
 <body>
-<header class="header"><div class="container nav">
-  <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" fill="#0a5c5c"/></svg><span>Demo area riservata</span></a>
-</div></header>
-
-<main class="login card container">
-  <h1>Inserisci PIN</h1>
+<main class="login card center">
+  <img src="/assets/logo.svg" alt="" width="36" height="36"/>
+  <h1>Accesso area riservata</h1>
   <form onsubmit="return login(event)">
-    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" required placeholder="Es. 2468"></div>
-    <button class="cta primary" type="submit">Entra</button>
+    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" required placeholder="Es. 1357"></div>
+    <button class="btn primary" type="submit">Entra</button>
   </form>
-  <p class="sub" style="margin-top:10px">Nota: protezione client‑side adatta a contenuti non sensibili.</p>
+  <p class="sub" style="margin-top:10px">Protezione lato client — per contenuti non sensibili.</p>
 </main>
-
 <script>
 function login(e){
   e.preventDefault();
+  const VALID = '1357'; // cambia qui
   const pin = document.getElementById('pin').value.trim();
-  const VALID = '2468'; // cambia qui
-  if(pin === VALID){
-    sessionStorage.setItem('am_auth','ok');
-    location.href = '/reserved/index.html';
-  }else{
-    alert('PIN errato');
-  }
+  if(pin === VALID){ sessionStorage.setItem('med_auth','ok'); location.href = '/reserved/index.html'; }
+  else{ alert('PIN errato'); }
   return false;
 }
 </script>

@@ -8,28 +8,15 @@
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<header class="header"><div class="container nav">
-  <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" fill="#0a5c5c"/></svg><span>Area riservata</span></a>
-  <nav><ul><li><a href="#" onclick="logout()">Logout</a></li></ul></nav>
-</div></header>
-
 <section class="section container">
-  <h1>Turni & Mezzi (demo)</h1>
+  <h1>Turni e Mezzi (demo)</h1>
   <div class="grid-2">
-    <div class="card"><h3>Turni</h3><ul class="list"><li>Oggi 08–20: Squadra A</li><li>Oggi 20–08: Squadra B</li></ul></div>
-    <div class="card"><h3>Mezzi</h3><ul class="list"><li>Amb 01 — operativo</li><li>Amb 02 — manutenzione</li></ul></div>
+    <div class="card"><h3>Turni di oggi</h3><ul><li>08–20: Squadra A</li><li>20–08: Squadra B</li></ul></div>
+    <div class="card"><h3>Stato mezzi</h3><ul><li>Amb 01 — operativo</li><li>Amb 02 — manutenzione</li><li>Aut 03 — operativo</li></ul></div>
   </div>
 </section>
-
 <script>
-(function(){
-  const ok = sessionStorage.getItem('am_auth') === 'ok';
-  if(!ok){ location.href = '/login.html'; }
-})();
-function logout(){
-  sessionStorage.removeItem('am_auth');
-  location.href = '/';
-}
+(function(){ if(sessionStorage.getItem('med_auth')!=='ok'){ location.href='/login.html'; } })();
 </script>
 </body>
 </html>
